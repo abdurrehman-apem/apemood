@@ -12,13 +12,13 @@
   /* HERO */
   .hero{
     position:relative;
-    min-height:100svh; /* better than 100vh on mobile */
+    min-height:100svh;
     background:#000;
     background-image:url("assets/APEM_Hero_Mobile_1080x1350.jpg");
-    background-size:contain;           /* show FULL image */
-    background-position:center bottom; /* keep cars visible */
+    background-size:contain;            /* FULL image */
+    background-position:center bottom;  /* show cars */
     background-repeat:no-repeat;
-    background-attachment:scroll;      /* IMPORTANT: mobile-friendly */
+    background-attachment:scroll;       /* mobile safe */
     display:flex;
     align-items:center;
     justify-content:center;
@@ -26,102 +26,104 @@
     overflow:hidden;
   }
 
-  /* Desktop */
   @media (min-width: 768px){
     .hero{
       background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
       background-size:contain;
       background-position:center center;
-      background-attachment:fixed; /* OK on desktop */
+      background-attachment:fixed;
     }
   }
 
-  /* SCI-FI OVERLAY GRID + GLOW */
+  /* LIGHT OVERLAY (background must stay visible) */
   .hero::before{
     content:"";
     position:absolute; inset:0;
     background:
-      linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.75)),
-      radial-gradient(circle at 20% 30%, rgba(0,255,255,0.10), transparent 45%),
-      radial-gradient(circle at 80% 70%, rgba(255,215,0,0.10), transparent 45%),
+      /* slight vignette only */
+      radial-gradient(circle at 50% 60%, rgba(0,0,0,0.15), rgba(0,0,0,0.35)),
+      /* sci-fi glow */
+      radial-gradient(circle at 18% 28%, rgba(0,255,255,0.14), transparent 46%),
+      radial-gradient(circle at 82% 72%, rgba(255,215,0,0.12), transparent 46%),
+      /* thin “tech lines” */
       repeating-linear-gradient(
         90deg,
-        rgba(0,255,255,0.05) 0px,
-        rgba(0,255,255,0.05) 1px,
+        rgba(0,255,255,0.06) 0px,
+        rgba(0,255,255,0.06) 1px,
         transparent 1px,
-        transparent 18px
+        transparent 22px
       );
-    animation: glowMove 14s linear infinite;
+    animation: drift 12s ease-in-out infinite;
     z-index:0;
   }
 
-  @keyframes glowMove{
+  @keyframes drift{
     0%{transform:translate3d(0,0,0)}
-    50%{transform:translate3d(2%, -2%, 0)}
+    50%{transform:translate3d(1.5%, -1.5%, 0)}
     100%{transform:translate3d(0,0,0)}
   }
 
   /* CONTENT CARD */
   .content{
     position:relative; z-index:1;
-    width:min(820px, 100%);
-    background:rgba(0,0,0,0.62);
-    border:1px solid rgba(0,255,255,0.18);
-    box-shadow: 0 0 30px rgba(0,255,255,0.08);
+    width:min(860px, 100%);
+    background:rgba(0,0,0,0.45); /* lighter so bg shows */
+    border:1px solid rgba(0,255,255,0.22);
+    box-shadow: 0 0 34px rgba(0,255,255,0.10);
     backdrop-filter: blur(6px);
     border-radius:18px;
-    padding:28px 22px;
+    padding:26px 20px;
     text-align:center;
   }
 
-  .tag{
-    display:inline-flex;
-    gap:10px;
-    align-items:center;
-    justify-content:center;
-    padding:8px 14px;
-    border-radius:999px;
-    border:1px solid rgba(255,215,0,0.25);
-    color:rgba(255,215,0,0.95);
-    font-weight:700;
-    letter-spacing:1px;
-    margin-bottom:14px;
-    font-size:0.9rem;
-  }
-
-  h1{
-    font-size:2.25rem;
-    letter-spacing:3px;
-    margin-bottom:12px;
-    text-shadow:0 0 18px rgba(0,255,255,0.18);
-  }
-
-  .subtitle{
-    opacity:0.92;
-    line-height:1.65;
-    margin-bottom:18px;
-    font-size:1.02rem;
-  }
-
-  /* Better mobile typography */
   @media (min-width:768px){
-    h1{font-size:3.2rem}
     .content{padding:34px 30px}
   }
 
-  /* STAGGER ANIMATION (works on mobile too) */
-  .fade1{animation:fadeUp .9s ease both .05s}
-  .fade2{animation:fadeUp .9s ease both .18s}
-  .fade3{animation:fadeUp .9s ease both .32s}
-  .fade4{animation:fadeUp .9s ease both .46s}
+  h1{
+    font-size:2.2rem;
+    letter-spacing:3px;
+    margin-bottom:12px;
+    text-shadow:0 0 18px rgba(0,255,255,0.20);
+  }
+  @media (min-width:768px){ h1{font-size:3.1rem} }
 
-  @keyframes fadeUp{
-    from{opacity:0;transform:translateY(18px)}
-    to{opacity:1;transform:translateY(0)}
+  /* TYPEWRITER AREA */
+  .typeBox{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    padding:14px 14px;
+    border-radius:14px;
+    background:rgba(0,0,0,0.28);
+    border:1px solid rgba(255,215,0,0.20);
+  }
+
+  .typeText{
+    font-size:1.02rem;
+    line-height:1.7;
+    opacity:0.95;
+    text-align:center;
+    min-height:3.6em;
+  }
+
+  .caret{
+    display:inline-block;
+    width:10px;
+    height:1.2em;
+    margin-left:4px;
+    background:rgba(255,215,0,0.95);
+    animation: blink 0.8s steps(1) infinite;
+    vertical-align:-0.2em;
+  }
+
+  @keyframes blink{
+    0%,49%{opacity:1}
+    50%,100%{opacity:0}
   }
 
   /* BUTTONS */
-  .btnRow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
+  .btnRow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px}
   .btn{
     display:inline-flex;
     align-items:center;
@@ -130,26 +132,26 @@
     padding:14px 22px;
     border-radius:999px;
     text-decoration:none;
-    font-weight:800;
-    letter-spacing:0.5px;
+    font-weight:900;
+    letter-spacing:0.4px;
     color:#0a0a0a;
     background:linear-gradient(135deg,#FFD700,#FFB800);
     box-shadow:0 0 18px rgba(255,215,0,0.55);
     border:1px solid rgba(255,215,0,0.35);
     transition:transform .22s ease, box-shadow .22s ease;
   }
-  .btn:hover{transform:scale(1.04);box-shadow:0 0 30px rgba(255,215,0,0.95)}
+  .btn:hover{transform:scale(1.04);box-shadow:0 0 32px rgba(255,215,0,0.95)}
   .btn.secondary{
     color:rgba(255,255,255,0.92);
-    background:rgba(0,255,255,0.08);
-    border:1px solid rgba(0,255,255,0.28);
-    box-shadow:0 0 18px rgba(0,255,255,0.12);
+    background:rgba(0,255,255,0.10);
+    border:1px solid rgba(0,255,255,0.30);
+    box-shadow:0 0 18px rgba(0,255,255,0.14);
   }
-  .btn.secondary:hover{box-shadow:0 0 30px rgba(0,255,255,0.22)}
+  .btn.secondary:hover{box-shadow:0 0 34px rgba(0,255,255,0.28)}
 
   /* Contract box */
   .contract{
-    margin-top:18px;
+    margin-top:16px;
     display:flex;
     flex-wrap:wrap;
     gap:10px;
@@ -157,14 +159,13 @@
     justify-content:center;
     padding:12px 12px;
     border-radius:14px;
-    background:rgba(0,0,0,0.35);
-    border:1px solid rgba(0,255,255,0.18);
+    background:rgba(0,0,0,0.22);
+    border:1px solid rgba(0,255,255,0.20);
   }
   .contract code{
     font-size:0.92rem;
     word-break:break-all;
     color:rgba(255,255,255,0.92);
-    opacity:0.95;
   }
   .copyBtn{
     cursor:pointer;
@@ -175,46 +176,11 @@
     background:linear-gradient(135deg,#FFD700,#FFB800);
     color:#0a0a0a;
   }
+  .mini{opacity:.88;font-weight:800}
 
-  /* Sections */
-  section{
-    padding:70px 20px;
-    background:#050505;
-    text-align:center;
-  }
-  .sectionWrap{
-    width:min(980px, 100%);
-    margin:0 auto;
-  }
-  h2{
-    font-size:2rem;
-    margin-bottom:14px;
-    letter-spacing:1px;
-  }
-  .info{
-    opacity:0.92;
-    line-height:1.75;
-    font-size:1.05rem;
-  }
-  .pillRow{
-    margin-top:18px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-  }
-  .pill{
-    padding:10px 14px;
-    border-radius:999px;
-    border:1px solid rgba(0,255,255,0.18);
-    background:rgba(0,255,255,0.06);
-    color:rgba(255,255,255,0.88);
-    font-weight:700;
-  }
-
-  /* Sound toggle */
+  /* Typing sound toggle */
   .soundBtn{
-    margin-top:14px;
+    margin-top:12px;
     display:inline-flex;
     align-items:center;
     justify-content:center;
@@ -222,51 +188,65 @@
     padding:12px 16px;
     border-radius:999px;
     border:1px solid rgba(0,255,255,0.25);
-    background:rgba(0,255,255,0.08);
+    background:rgba(0,255,255,0.10);
     color:rgba(255,255,255,0.92);
     font-weight:900;
     cursor:pointer;
+  }
+
+  /* SECTION */
+  section{padding:70px 20px;background:#050505;text-align:center}
+  .sectionWrap{width:min(980px, 100%);margin:0 auto}
+  h2{font-size:2rem;margin-bottom:14px;letter-spacing:1px}
+  .info{opacity:0.92;line-height:1.75;font-size:1.05rem}
+  .pillRow{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .pill{
+    padding:10px 14px;border-radius:999px;
+    border:1px solid rgba(0,255,255,0.18);
+    background:rgba(0,255,255,0.06);
+    color:rgba(255,255,255,0.88);
+    font-weight:800;
   }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <div class="hero">
   <div class="content">
-    <div class="tag fade1">AI • TECH • SCI-FI • APE MOOD</div>
-    <h1 class="fade2">APE MOOD (APEM)</h1>
-    <p class="subtitle fade3">
-      A community-driven token on <b>BNB Chain</b> (<b>BEP-20</b>) with
-      <b>EVM / ERC-20 compatible tooling</b>, focused on ethical, long-term and sustainable growth.
-    </p>
+    <h1>APE MOOD (APEM)</h1>
 
-    <div class="btnRow fade4">
-      <!-- Put your real swap link later -->
+    <!-- Typewriter intro -->
+    <div class="typeBox">
+      <div class="typeText">
+        <span id="typed"></span><span class="caret"></span>
+      </div>
+    </div>
+
+    <div class="btnRow">
+      <!-- swap link later -->
       <a class="btn" href="#" target="_blank" rel="noopener">Swap APEM</a>
       <a class="btn secondary" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank" rel="noopener">Whitepaper</a>
     </div>
 
     <div class="contract">
-      <span style="opacity:.9;font-weight:800">Contract:</span>
+      <span class="mini">Contract:</span>
       <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
       <button class="copyBtn" id="copyBtn">Copy</button>
-      <span id="copyStatus" style="opacity:.85;font-weight:800"></span>
+      <span id="copyStatus" class="mini"></span>
     </div>
 
-    <button class="soundBtn" id="soundBtn">🔊 Enable Sci-Fi Sound</button>
+    <button class="soundBtn" id="soundBtn">🔊 Typing Sound: OFF</button>
   </div>
 </div>
 
-<!-- TOKEN INFO -->
 <section>
   <div class="sectionWrap">
     <h2>Token Information</h2>
     <div class="info">
       <p><b>Name:</b> Ape Mood</p>
       <p><b>Symbol:</b> APEM</p>
-      <p><b>Chain:</b> BNB Chain (BEP-20) — EVM / ERC-20 compatible</p>
+      <p><b>Chain:</b> BNB Chain (BEP-20) — <b>EVM / ERC-20 compatible</b></p>
       <p><b>Total Supply:</b> 150,000,000</p>
       <p style="margin-top:12px">
         Built for transparency, community participation, and ethical principles — no guaranteed returns.
@@ -274,9 +254,9 @@
     </div>
 
     <div class="pillRow">
-      <div class="pill">Long-Term Vision</div>
+      <div class="pill">AI-style Motion UI</div>
+      <div class="pill">Tech / Scientific Theme</div>
       <div class="pill">Community-Driven</div>
-      <div class="pill">Ethical & Transparent</div>
       <div class="pill">BNB Chain • EVM</div>
     </div>
   </div>
@@ -299,76 +279,79 @@
     }
   });
 
-  // Sci-Fi sound (no autoplay; user click required)
+  // Typing sound (must be user-enabled due to browser autoplay rules)
+  let soundOn = false;
   let audioCtx = null;
-  let isOn = false;
-  let osc1, osc2, gain, lfo;
 
-  function startSound(){
+  function ensureAudio(){
+    if(audioCtx) return;
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    gain = audioCtx.createGain();
-    gain.gain.value = 0.0;
-    gain.connect(audioCtx.destination);
-
-    // main hum
-    osc1 = audioCtx.createOscillator();
-    osc1.type = "sawtooth";
-    osc1.frequency.value = 55;
-
-    // shimmer
-    osc2 = audioCtx.createOscillator();
-    osc2.type = "triangle";
-    osc2.frequency.value = 220;
-
-    // slow movement
-    lfo = audioCtx.createOscillator();
-    lfo.type = "sine";
-    lfo.frequency.value = 0.18;
-
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value = 18; // subtle wobble
-
-    lfo.connect(lfoGain);
-    lfoGain.connect(osc2.frequency);
-
-    osc1.connect(gain);
-    osc2.connect(gain);
-
-    lfo.start();
-    osc1.start();
-    osc2.start();
-
-    // fade in
-    gain.gain.setTargetAtTime(0.03, audioCtx.currentTime, 0.15);
   }
 
-  function stopSound(){
-    if(!audioCtx) return;
-    gain.gain.setTargetAtTime(0.0, audioCtx.currentTime, 0.08);
-    setTimeout(()=>{
-      try{osc1.stop(); osc2.stop(); lfo.stop();}catch(e){}
-      audioCtx.close();
-      audioCtx = null;
-    }, 200);
+  function clickBeep(){
+    if(!soundOn) return;
+    ensureAudio();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "square";
+    osc.frequency.value = 900 + Math.random()*220; // tiny variation
+
+    gain.gain.value = 0.0;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    const now = audioCtx.currentTime;
+    gain.gain.setValueAtTime(0.0, now);
+    gain.gain.linearRampToValueAtTime(0.02, now + 0.005);
+    gain.gain.linearRampToValueAtTime(0.0, now + 0.03);
+
+    osc.start(now);
+    osc.stop(now + 0.04);
   }
 
   const soundBtn = document.getElementById("soundBtn");
   soundBtn.addEventListener("click", async () => {
-    if(!isOn){
-      startSound();
-      isOn = true;
-      soundBtn.textContent = "🔇 Disable Sci-Fi Sound";
+    soundOn = !soundOn;
+    if(soundOn){
+      ensureAudio();
+      if(audioCtx.state === "suspended") await audioCtx.resume();
+      soundBtn.textContent = "🔊 Typing Sound: ON";
     }else{
-      stopSound();
-      isOn = false;
-      soundBtn.textContent = "🔊 Enable Sci-Fi Sound";
+      soundBtn.textContent = "🔊 Typing Sound: OFF";
     }
   });
+
+  // Typewriter intro (AI/scientific feel) — no extra labels
+  const typedEl = document.getElementById("typed");
+  const intro =
+    "Initializing Ape Mood interface... " +
+    "Deploying on BNB Chain (BEP-20). " +
+    "EVM / ERC-20 compatible tooling enabled. " +
+    "Community-driven, ethical, long-term vision.";
+
+  let i = 0;
+  function typeNext(){
+    if(i <= intro.length){
+      typedEl.textContent = intro.slice(0, i);
+      // sound on non-space chars
+      const ch = intro[i-1];
+      if(ch && ch !== " " && ch !== "." && ch !== ",") clickBeep();
+
+      i++;
+      const speed = (ch === "." ? 220 : 28 + Math.random()*22); // pauses at dots
+      setTimeout(typeNext, speed);
+    }
+  }
+
+  // Start typing on load (visual), sound only if user enabled
+  window.addEventListener("load", typeNext);
 </script>
 
 </body>
 </html>
+
 
 
 
