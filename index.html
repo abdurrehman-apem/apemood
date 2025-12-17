@@ -19,18 +19,21 @@
     }
 
     .hero {
-      min-height: 100vh;
-      background-image: url("assets/APEM_Hero_Mobile_1080x1350.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
+  min-height: 100vh;
+  background-color: #000;
+  background-image: url("assets/APEM_Hero_Mobile_1080x1350.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
 
     .overlay {
       background: rgba(0, 0, 0, 0.6);
@@ -68,10 +71,12 @@
     }
 
     @media (min-width: 768px) {
-      .hero {
-        background-image: url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
-      }
-    }
+  .hero {
+    background-image: url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
+    background-size: contain;
+  }
+}
+
 
     section {
       padding: 60px 20px;
@@ -84,7 +89,6 @@
 
   <div class="hero">
     <div class="overlay">
-      <img src="assets/APEM_Logo_Transparent_NoText_v2.png" class="logo" />
       <h1>APE MOOD</h1>
       <p>Community-driven BEP-20 token on BNB Chain.</p>
 
