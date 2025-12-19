@@ -6,9 +6,7 @@
 <title>Ape Mood (APEM)</title>
 
 <style>
-:root{
-  --neon:#FFD700;
-}
+:root{--neon:#FFD700}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:var(--neon);overflow-x:hidden}
 
@@ -17,85 +15,74 @@ body{background:#000;color:var(--neon);overflow-x:hidden}
   position:relative;
   min-height:100svh;
   padding:90px 20px 40px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
+  background-size:contain;
+  background-position:center bottom;
   overflow:hidden;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255,215,0,.18),
-      rgba(255,215,0,0)
-    ),
-    url("assets/APEM_Hero_Mobile_1080x1350.jpg") center bottom/contain no-repeat;
-  background-blend-mode:overlay;
 }
 @media(min-width:768px){
 .hero{
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255,215,0,.18),
-      rgba(255,215,0,0)
-    ),
-    url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg") center/cover no-repeat;
+  background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
+  background-size:cover;
+  background-position:center;
 }
 }
 
-/* BACKGROUND LINES (BEHIND IMAGE) */
-.hero::after{
-  content:"";
+/* BACKGROUND MOVING NEON LINES */
+.bg-lines{
   position:absolute;
   inset:0;
+  z-index:1;
+  pointer-events:none;
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(255,215,0,.25),
-      rgba(255,215,0,.25) 1px,
+      rgba(255,215,0,.35),
+      rgba(255,215,0,.35) 1px,
       transparent 1px,
-      transparent 80px
+      transparent 70px
     );
-  animation:bgLines 7s linear infinite;
-  opacity:.45;
-  z-index:0;
+  animation:linesMove 5s linear infinite;
+  opacity:.65;
+  mix-blend-mode:overlay;
 }
-@keyframes bgLines{
+@keyframes linesMove{
   from{background-position:0 -100%}
   to{background-position:0 100%}
 }
 
-/* CONTENT BOX */
+/* CONTENT */
 .box{
   position:relative;
   z-index:2;
   width:min(900px,100%);
-  background:rgba(0,0,0,.55);
-  border:1px solid rgba(255,215,0,.4);
-  border-radius:22px;
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(255,215,0,.45);
+  border-radius:24px;
   padding:28px;
   text-align:center;
-  box-shadow:0 0 60px rgba(255,215,0,.35);
+  box-shadow:0 0 70px rgba(255,215,0,.45);
 }
 
 /* TITLE */
 h1{
   font-size:2.4rem;
   letter-spacing:4px;
-  animation:glow 3s infinite;
+  animation:titleGlow 3s infinite;
 }
-@keyframes glow{
-  50%{text-shadow:0 0 35px var(--neon)}
+@keyframes titleGlow{
+  50%{text-shadow:0 0 40px var(--neon)}
 }
 
-/* TYPING */
+/* TYPING TEXT */
 .type{
   margin:18px auto;
   max-width:760px;
   min-height:3.8em;
   line-height:1.7;
-  animation:textPulse 4s infinite;
+  animation:textGlow 4s infinite;
 }
-@keyframes textPulse{
+@keyframes textGlow{
   50%{text-shadow:0 0 18px var(--neon)}
 }
 .cursor{
@@ -119,35 +106,33 @@ h1{
 .btn,.small{
   border-radius:999px;
   cursor:pointer;
-  color:#000;
-  background:linear-gradient(135deg,var(--neon),#ffb800);
-  box-shadow:0 0 22px rgba(255,215,0,.8);
   transition:transform .25s, box-shadow .25s;
-  animation:btnGlow 3s infinite;
-}
-@keyframes btnGlow{
-  50%{box-shadow:0 0 40px rgba(255,215,0,1)}
 }
 .btn{
   padding:14px 30px;
   font-weight:900;
+  color:#000;
+  background:linear-gradient(135deg,var(--neon),#ffb800);
+  box-shadow:0 0 25px rgba(255,215,0,.9);
+  animation:btnGlow 3s infinite;
+}
+@keyframes btnGlow{
+  50%{box-shadow:0 0 45px rgba(255,215,0,1)}
 }
 .small{
   padding:8px 16px;
   font-size:.85rem;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.65);
   color:var(--neon);
   border:1px solid var(--neon);
+  box-shadow:0 0 18px rgba(255,215,0,.55);
 }
-.btn:hover,.small:hover{
-  transform:scale(1.06);
-}
+.btn:hover,.small:hover{transform:scale(1.07)}
 
-/* BUY */
 .buy{
   margin-top:14px;
   font-weight:900;
-  animation:glow 3s infinite;
+  animation:titleGlow 3s infinite;
 }
 
 /* PORTAL */
@@ -157,16 +142,16 @@ h1{
   display:none;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.9);
+  background:rgba(0,0,0,.92);
   z-index:9999;
 }
 .portalBox{
   width:min(860px,92%);
-  background:rgba(0,0,0,.65);
+  background:rgba(0,0,0,.7);
   border:1px solid var(--neon);
-  border-radius:22px;
+  border-radius:24px;
   padding:24px;
-  box-shadow:0 0 80px rgba(255,215,0,.45);
+  box-shadow:0 0 90px rgba(255,215,0,.55);
   animation:portalIn .6s ease;
 }
 @keyframes portalIn{
@@ -175,7 +160,7 @@ h1{
 }
 .close{
   margin-top:16px;
-  padding:6px 16px;
+  padding:6px 18px;
   background:transparent;
   color:var(--neon);
   border:1px solid var(--neon);
@@ -187,6 +172,8 @@ h1{
 <body>
 
 <div class="hero">
+  <div class="bg-lines"></div>
+
   <div class="box">
     <h1>APE MOOD</h1>
 
@@ -227,7 +214,7 @@ function playKey(){
   const osc=audioCtx.createOscillator();
   const gain=audioCtx.createGain();
   osc.type="square";
-  osc.frequency.value=800;
+  osc.frequency.value=850;
   gain.gain.value=0.015;
   osc.connect(gain);
   gain.connect(audioCtx.destination);
@@ -237,28 +224,27 @@ function playKey(){
 
 /* TYPING ENGINE */
 const typed=document.getElementById("typed");
-let typingTimer;
+let tmr;
 function typeText(text){
-  clearTimeout(typingTimer);
+  clearTimeout(tmr);
   typed.textContent="";
   let i=0;
-  function run(){
+  (function run(){
     if(i<text.length){
       typed.textContent+=text[i++];
       playKey();
-      typingTimer=setTimeout(run,60);
+      tmr=setTimeout(run,60);
     }
-  }
-  run();
+  })();
 }
 typeText("Ape Mood (APEM) is a community-driven, long-term digital asset built on BNB Smart Chain.");
 
-/* PORTALS */
+/* PORTAL CONTENT */
 const DATA={
 intro:"Ape Mood is built for transparency, responsibility, and long-term ecosystem growth.",
 road:"Phase 1 focuses on token launch and community. Phase 2 expands into AI and digital platforms. Phase 3 connects real-world businesses with blockchain.",
 supply:"Total supply is fixed at 150 million tokens. No minting, no inflation, no hidden mechanics.",
-expect:"There are no guaranteed profits. Growth depends on real development, market conditions, and community participation."
+expect:"There are no guaranteed profits. Growth depends on development progress and community participation."
 };
 
 const portal=document.getElementById("portal");
@@ -269,9 +255,7 @@ function openPortal(k){
   typeText(DATA[k]);
   setTimeout(()=>portal.style.display="none",10000);
 }
-function closePortal(){
-  portal.style.display="none";
-}
+function closePortal(){portal.style.display="none"}
 </script>
 
 </body>
