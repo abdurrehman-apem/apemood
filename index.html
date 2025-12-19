@@ -9,17 +9,19 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:#FFD700;overflow-x:hidden}
 
-/* HERO (UNCHANGED BACKGROUND) */
+/* HERO (BACKGROUND IMAGE NOT CHANGED) */
 .hero{
   min-height:100svh;
   padding:90px 20px 40px;
   background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
   background-size:contain;
   background-position:center bottom;
+  background-attachment:scroll;
   display:flex;
   justify-content:center;
   align-items:center;
   position:relative;
+  overflow:hidden;
 }
 @media(min-width:768px){
   .hero{
@@ -29,29 +31,29 @@ body{background:#000;color:#FFD700;overflow-x:hidden}
   }
 }
 
-/* LIGHT NEON LINES (requested) */
+/* LIGHT NEON LINES OVERLAY (photo still visible) */
 .hero::after{
   content:"";
   position:absolute; inset:0;
   pointer-events:none;
   background:
     repeating-linear-gradient(
-      110deg,
+      115deg,
       rgba(255,215,0,.05),
       rgba(255,215,0,.05) 1px,
       transparent 1px,
-      transparent 70px
+      transparent 78px
     );
-  animation:scan 14s linear infinite;
   mix-blend-mode:screen;
   opacity:.55;
+  animation:scan 14s linear infinite;
 }
 @keyframes scan{
   from{background-position:0 0}
   to{background-position:900px 900px}
 }
 
-/* CONTENT */
+/* CONTENT BOX */
 .box{
   width:min(900px,100%);
   background:rgba(0,0,0,.35);
@@ -59,9 +61,9 @@ body{background:#000;color:#FFD700;overflow-x:hidden}
   border-radius:20px;
   padding:28px;
   text-align:center;
-  box-shadow:0 0 40px rgba(255,215,0,.22);
+  box-shadow:0 0 40px rgba(255,215,0,.20);
   position:relative;
-  z-index:1;
+  z-index:2;
 }
 
 /* TITLE */
@@ -69,7 +71,9 @@ h1{
   color:#FFD700;
   letter-spacing:4px;
   font-size:2.3rem;
-  text-shadow:0 0 14px rgba(255,215,0,.9), 0 0 30px rgba(255,215,0,.45);
+  text-shadow:
+    0 0 10px rgba(255,215,0,.85),
+    0 0 28px rgba(255,215,0,.55);
 }
 @media(min-width:768px){h1{font-size:3.4rem}}
 
@@ -80,7 +84,8 @@ h1{
   font-size:1.05rem;
   line-height:1.7;
   min-height:3.8em;
-  text-shadow:0 0 12px rgba(255,215,0,.65);
+  color:#ffeaa7;
+  text-shadow:0 0 12px rgba(255,215,0,.55);
 }
 .cursor{
   display:inline-block;
@@ -92,7 +97,7 @@ h1{
 }
 @keyframes blink{50%{opacity:0}}
 
-/* BUTTONS */
+/* BUTTONS (same shape, neon touch) */
 .btns{
   display:flex;
   justify-content:center;
@@ -107,30 +112,36 @@ h1{
   text-decoration:none;
   color:#000;
   background:linear-gradient(135deg,#FFD700,#FFB800);
-  box-shadow:0 0 18px rgba(255,215,0,.6), inset 0 0 10px rgba(255,255,255,.28);
-  border:1px solid rgba(255,255,255,.25);
+  border:1px solid rgba(255,255,255,.20);
+  box-shadow:
+    0 0 18px rgba(255,215,0,.55),
+    inset 0 0 10px rgba(255,255,255,.25);
+  transition:transform .12s ease, box-shadow .12s ease;
 }
+.btn:active{transform:translateY(1px); box-shadow:0 0 26px rgba(255,215,0,.75)}
 .small{
   padding:8px 14px;
   font-size:.85rem;
-  background:rgba(0,0,0,.45);
+  background:rgba(0,0,0,.42);
   color:#FFD700;
   border:1px solid rgba(255,215,0,.55);
   border-radius:999px;
   box-shadow:0 0 12px rgba(255,215,0,.35);
   cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease;
 }
+.small:active{transform:translateY(1px); box-shadow:0 0 18px rgba(255,215,0,.55)}
 
-/* Buy text */
+/* BUY TEXT */
 .buy{
   margin-top:12px;
   color:#FFD700;
   font-weight:800;
   letter-spacing:1px;
-  text-shadow:0 0 14px rgba(255,215,0,.8);
+  text-shadow:0 0 14px rgba(255,215,0,.7);
 }
 
-/* contract */
+/* CONTRACT */
 .contract{
   margin-top:16px;
   padding:12px;
@@ -141,6 +152,8 @@ h1{
   justify-content:center;
   gap:10px;
   flex-wrap:wrap;
+  color:#ffeaa7;
+  text-shadow:0 0 10px rgba(255,215,0,.25);
 }
 .contract button{
   background:#FFD700;
@@ -151,117 +164,145 @@ h1{
   cursor:pointer;
 }
 
+/* ====== HUD PORTAL (appears on any button click) ====== */
+.portal{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.82);
+  z-index:9999;
+  backdrop-filter: blur(2px);
+}
+.portalBox{
+  width:min(900px,92%);
+  border:1px solid rgba(255,215,0,.35);
+  border-radius:18px;
+  background:rgba(0,0,0,.55);
+  box-shadow:0 0 70px rgba(255,215,0,.18);
+  overflow:hidden;
+}
+.portalTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(255,215,0,.2);
+}
+.pill{
+  font-size:.8rem;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,215,0,.35);
+  background:rgba(255,215,0,.06);
+  color:#ffeaa7;
+  text-shadow:0 0 10px rgba(255,215,0,.15);
+}
+.closeBtn{
+  cursor:pointer;
+  border:1px solid rgba(255,215,0,.35);
+  background:transparent;
+  color:#FFD700;
+  border-radius:999px;
+  padding:6px 10px;
+  font-weight:800;
+}
+.portalBody{
+  padding:16px;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:14px;
+}
+@media(min-width:900px){
+  .portalBody{grid-template-columns: 1.1fr .9fr;}
+}
+.hudPanel{
+  border:1px solid rgba(255,215,0,.22);
+  border-radius:16px;
+  background:rgba(0,0,0,.35);
+  padding:14px;
+  box-shadow:0 0 28px rgba(255,215,0,.10);
+}
+.hudTitle{
+  font-weight:900;
+  letter-spacing:1px;
+  color:#FFD700;
+  text-shadow:0 0 14px rgba(255,215,0,.45);
+  margin-bottom:8px;
+}
+.hudText{
+  color:#ffeaa7;
+  line-height:1.75;
+  text-shadow:0 0 10px rgba(255,215,0,.12);
+  min-height:120px;
+}
+.hudSvg{
+  width:100%;
+  height:220px;
+  display:block;
+}
+.gridline{stroke:rgba(255,215,0,.12);stroke-width:1}
+.stroke{stroke:#FFD700;stroke-width:2;fill:none;filter:drop-shadow(0 0 8px rgba(255,215,0,.45))}
+.dot{fill:#FFD700;filter:drop-shadow(0 0 8px rgba(255,215,0,.55))}
+.scanline{
+  stroke:rgba(255,215,0,.35);
+  stroke-width:2;
+  filter:drop-shadow(0 0 10px rgba(255,215,0,.45));
+  animation:scanY 2.6s linear infinite;
+}
+@keyframes scanY{
+  0%{transform:translateY(0px)}
+  100%{transform:translateY(200px)}
+}
+
 /* ===== WHITEPAPER HUD SECTION (scroll down) ===== */
 .whitepaper{
   padding:70px 18px 90px;
   background:#040404;
   border-top:1px solid rgba(255,215,0,.18);
 }
-.wp-wrap{
-  width:min(1100px,100%);
-  margin:0 auto;
-}
-.wp-head{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.wp-title{
+.wpWrap{width:min(1100px,100%);margin:0 auto}
+.wpHead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.wpTitle{
   font-size:1.8rem;
   letter-spacing:2px;
-  text-shadow:0 0 16px rgba(255,215,0,.7);
+  color:#FFD700;
+  text-shadow:0 0 16px rgba(255,215,0,.55);
 }
-.wp-sub{
-  opacity:.9;
-  font-size:.95rem;
-  text-shadow:0 0 10px rgba(255,215,0,.25);
-}
-.wp-grid{
+.wpSub{color:#ffeaa7;opacity:.92;text-shadow:0 0 10px rgba(255,215,0,.15)}
+.grid{
   margin-top:18px;
   display:grid;
   grid-template-columns:repeat(12,1fr);
   gap:14px;
 }
-.panel{
+.card{
   grid-column:span 12;
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(255,215,0,.26);
+  border:1px solid rgba(255,215,0,.22);
   border-radius:18px;
+  background:rgba(0,0,0,.45);
   padding:16px;
-  box-shadow:0 0 28px rgba(255,215,0,.12);
-  position:relative;
-  overflow:hidden;
+  box-shadow:0 0 26px rgba(255,215,0,.10);
 }
 @media(min-width:900px){
-  .panel.half{grid-column:span 6;}
-  .panel.third{grid-column:span 4;}
+  .card.half{grid-column:span 6;}
+  .card.third{grid-column:span 4;}
 }
-.panel::before{
-  content:"";
-  position:absolute; inset:-40% -40%;
-  background:radial-gradient(circle, rgba(255,215,0,.12), transparent 60%);
-  transform:rotate(18deg);
-  opacity:.75;
+.cardTop{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.card h3{
+  margin:10px 0 10px;
+  color:#FFD700;
+  text-shadow:0 0 14px rgba(255,215,0,.35);
 }
-.panel > *{position:relative; z-index:1;}
-
-.panel-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.tag{
-  font-size:.75rem;
-  padding:6px 10px;
-  border:1px solid rgba(255,215,0,.35);
-  border-radius:999px;
-  background:rgba(255,215,0,.06);
-  box-shadow:0 0 10px rgba(255,215,0,.18);
-}
-.panel h3{
-  font-size:1.05rem;
-  letter-spacing:1px;
-  margin:8px 0 10px;
-  text-shadow:0 0 12px rgba(255,215,0,.45);
-}
-.panel p{
+.card p{
   color:#ffeaa7;
-  opacity:.95;
   line-height:1.75;
-  text-shadow:0 0 10px rgba(255,215,0,.14);
+  text-shadow:0 0 10px rgba(255,215,0,.10);
 }
-
-/* HUD diagram blocks */
-.hud{
-  margin-top:12px;
-  border:1px solid rgba(255,215,0,.2);
-  border-radius:14px;
-  padding:12px;
-  background:rgba(0,0,0,.35);
-}
-.hud svg{width:100%;height:120px;display:block}
-.line{
-  stroke:#FFD700;
-  stroke-width:2;
-  fill:none;
-  filter:drop-shadow(0 0 6px rgba(255,215,0,.55));
-}
-.gridline{stroke:rgba(255,215,0,.12);stroke-width:1}
-.dot{fill:#FFD700;filter:drop-shadow(0 0 6px rgba(255,215,0,.6));}
-
-/* loader */
-.wp-status{
-  margin-top:10px;
-  padding:10px 12px;
-  border:1px dashed rgba(255,215,0,.35);
-  border-radius:12px;
-  color:#ffeaa7;
-  opacity:.9;
-}
+.miniHud{margin-top:12px;border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:12px;background:rgba(0,0,0,.35)}
+.miniHud svg{width:100%;height:130px;display:block}
 </style>
 </head>
 
@@ -276,15 +317,18 @@ h1{
     </div>
 
     <div class="btns">
-      <a class="btn" href="#">Swap</a>
-      <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
+      <!-- ONLY TEXT CHANGE: Swap -->
+      <a class="btn" href="#" onclick="openHUD('swap'); return false;">Swap</a>
+      <!-- Whitepaper opens in new tab (your assets PDF) -->
+      <a class="btn" href="assets/APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank" rel="noopener">Whitepaper</a>
     </div>
 
     <div class="btns">
-      <button class="small" onclick="showIntro()">Token Intro</button>
-      <button class="small" onclick="showRoadMap()">Road Map</button>
-      <button class="small" onclick="showSupply()">Supply Details</button>
-      <button class="small" onclick="showExpect()">Our Expectations</button>
+      <button class="small" onclick="openHUD('intro')">Token Intro</button>
+      <!-- Projects replaced with Road Map -->
+      <button class="small" onclick="openHUD('roadmap')">Road Map</button>
+      <button class="small" onclick="openHUD('supply')">Supply Details</button>
+      <button class="small" onclick="openHUD('expect')">Our Expectations</button>
     </div>
 
     <div class="buy">BUY AND HOLD</div>
@@ -297,174 +341,333 @@ h1{
   </div>
 </div>
 
-<!-- WHITEPAPER SECTION (same page, scroll down) -->
-<section class="whitepaper" id="whitepaper">
-  <div class="wp-wrap">
-    <div class="wp-head">
-      <div>
-        <div class="wp-title">WHITEPAPER HUD</div>
-        <div class="wp-sub">Scroll panels • Neon diagrams • Auto generated from PDF text</div>
+<!-- HUD PORTAL -->
+<div class="portal" id="portal">
+  <div class="portalBox">
+    <div class="portalTop">
+      <div class="pill" id="hudTag">HUD • APEM</div>
+      <button class="closeBtn" onclick="closeHUD()">CLOSE</button>
+    </div>
+
+    <div class="portalBody">
+      <div class="hudPanel">
+        <div class="hudTitle" id="hudTitle">SYSTEM</div>
+        <div class="hudText" id="hudText"></div>
       </div>
-      <div class="tag">SOURCE: APE_MOOD_APEM_Whitepaper_v4.pdf</div>
+
+      <div class="hudPanel">
+        <svg class="hudSvg" id="hudSvg" viewBox="0 0 420 220" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHITEPAPER HUD (scroll down, same page) -->
+<section class="whitepaper" id="whitepaper">
+  <div class="wpWrap">
+    <div class="wpHead">
+      <div>
+        <div class="wpTitle">WHITEPAPER HUD</div>
+        <div class="wpSub">Real whitepaper points — explained with neon HUD diagrams.</div>
+      </div>
+      <div class="pill">SOURCE: assets/APE_MOOD_APEM_Whitepaper_v4.pdf</div>
     </div>
 
-    <div class="wp-status" id="wpStatus">
-      Loading PDF… If this stays stuck, PDF path is wrong or blocked by browser.
-    </div>
-
-    <div class="wp-grid" id="wpGrid"></div>
+    <div class="grid" id="wpGrid"></div>
   </div>
 </section>
 
-<!-- PDF.js (CDN) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 <script>
-/* ====== HERO typing (same behavior) ====== */
-const typed=document.getElementById("typed");
+/* ===== HERO TYPING (same behavior) ===== */
+const typed = document.getElementById("typed");
 let timer;
 
 function typeText(text){
   clearTimeout(timer);
-  typed.textContent="";
-  let i=0;
+  typed.textContent = "";
+  let i = 0;
   function run(){
-    if(i<=text.length){
-      typed.textContent=text.slice(0,i++);
-      timer=setTimeout(run,60);
+    if(i <= text.length){
+      typed.textContent = text.slice(0, i++);
+      timer = setTimeout(run, 60);
     }
   }
   run();
 }
+
 typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
 
-function showIntro(){
-  typeText("Ape Mood (APEM) is a community-driven digital asset designed for transparency and long-term growth.");
-}
-function showRoadMap(){
-  typeText("Road Map: Phase 1 launch + community, Phase 2 AI/platforms, Phase 3 real-world blockchain expansion.");
-}
-function showSupply(){
-  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No minting or inflation mechanisms exist.");
-}
-function showExpect(){
-  typeText("We encourage responsible participation, patience, and a long-term mindset.");
-}
-
+/* ===== COPY CA ===== */
 function copyCA(){
   navigator.clipboard.writeText(document.getElementById("ca").innerText);
   document.getElementById("copyMsg").innerText="Copied";
   setTimeout(()=>document.getElementById("copyMsg").innerText="",1200);
 }
 
-/* ====== WHITEPAPER: read PDF + make HUD panels ====== */
-const PDF_PATH = "APE_MOOD_APEM_Whitepaper_v4.pdf"; // change to "assets/..." if needed
-const wpStatus = document.getElementById("wpStatus");
-const wpGrid = document.getElementById("wpGrid");
-
-function hudChart(seed=1){
-  // deterministic-ish points
-  const pts = [];
-  let x=10, y=60;
-  for(let i=0;i<10;i++){
-    seed = (seed*9301+49297)%233280;
-    const r = seed/233280;
-    x += 9;
-    y = 30 + Math.round(r*70);
-    pts.push([x,y]);
+/* ===== HUD DATA (derived from your PDF sections 1–11) ===== */
+const HUD = {
+  intro: {
+    title: "TOKEN INTRO • FOUNDATION",
+    tag: "SECTION 1 • INTRODUCTION",
+    text:
+`Ape Mood (APEM) is a community-driven digital asset on BNB Smart Chain.
+Purpose: build a future ecosystem spanning blockchain technology, AI, digital platforms,
+and ethical real-world business initiatives.`,
+    diagram: "core"
+  },
+  roadmap: {
+    title: "ROAD MAP • PHASED EXECUTION",
+    tag: "SECTION 9 • ROADMAP",
+    text:
+`Phase 1: Token launch and community building.
+Phase 2: Digital platforms, AI exploration, and ecosystem planning.
+Phase 3: Connecting real-world businesses with blockchain and long-term expansion.`,
+    diagram: "timeline"
+  },
+  supply: {
+    title: "SUPPLY DETAILS • FIXED & VERIFIED",
+    tag: "SECTION 5–6 • TOKEN & SUPPLY",
+    text:
+`Token: Ape Mood (APEM) • Chain: BNB Smart Chain • Decimals: 18
+Total Supply: 150,000,000 APEM (fixed).
+No minting or inflation mechanisms. A portion may be available initially,
+remaining supply released gradually for stability.`,
+    diagram: "meter"
+  },
+  expect: {
+    title: "EXPECTATIONS • RESPONSIBLE PARTICIPATION",
+    tag: "WHITEPAPER MESSAGE",
+    text:
+`The project encourages responsible participation and long-term mindset.
+No guaranteed profits or fixed returns. Growth depends on development progress,
+market conditions, and ecosystem success.`,
+    diagram: "shield"
+  },
+  swap: {
+    title: "SWAP • USER GATEWAY",
+    tag: "INTERFACE",
+    text:
+`Swap is your gateway to acquire APEM from the market.
+Always verify the contract address and use trusted DEX routes.`,
+    diagram: "route"
   }
-  const d = pts.map((p,i)=> (i===0?`M ${p[0]} ${p[1]}`:`L ${p[0]} ${p[1]}`)).join(" ");
-  return `
-  <div class="hud">
-    <svg viewBox="0 0 120 120" preserveAspectRatio="none" aria-hidden="true">
-      ${[...Array(6)].map((_,i)=>`<line class="gridline" x1="0" y1="${i*20}" x2="120" y2="${i*20}"></line>`).join("")}
-      ${[...Array(6)].map((_,i)=>`<line class="gridline" x1="${i*20}" y1="0" x2="${i*20}" y2="120"></line>`).join("")}
-      <path class="line" d="${d}"></path>
-      ${pts.slice(-2).map(p=>`<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="2.6"></circle>`).join("")}
-    </svg>
-  </div>`;
+};
+
+/* ===== HUD PORTAL CONTROL ===== */
+const portal = document.getElementById("portal");
+const hudTitle = document.getElementById("hudTitle");
+const hudText = document.getElementById("hudText");
+const hudTag = document.getElementById("hudTag");
+const hudSvg = document.getElementById("hudSvg");
+
+let hudTimer;
+
+function closeHUD(){
+  portal.style.display = "none";
+  clearTimeout(hudTimer);
 }
 
-function makePanel(title, tag, body, seed, sizeClass="half"){
-  const el = document.createElement("div");
-  el.className = `panel ${sizeClass}`;
-  el.innerHTML = `
-    <div class="panel-top">
-      <div class="tag">${tag}</div>
-      <div class="tag">HUD • LIVE</div>
-    </div>
-    <h3>${title}</h3>
-    <p>${body}</p>
-    ${hudChart(seed)}
-  `;
-  return el;
-}
+function openHUD(key){
+  const item = HUD[key];
+  if(!item) return;
 
-function chunkText(full){
-  // simple chunking: split by double newlines or long length
-  const raw = full
-    .replace(/\s+\n/g,"\n")
-    .replace(/\n{3,}/g,"\n\n")
-    .trim();
+  portal.style.display = "flex";
+  hudTitle.textContent = item.title;
+  hudTag.textContent = item.tag;
 
-  const parts = raw.split(/\n\n+/).filter(Boolean);
-  const chunks = [];
+  // typing inside portal
+  clearTimeout(hudTimer);
+  hudText.textContent = "";
+  let i = 0;
+  const t = item.text;
 
-  let buf = "";
-  for(const p of parts){
-    if((buf + "\n\n" + p).length > 700){
-      chunks.push(buf.trim());
-      buf = p;
-    } else {
-      buf += (buf? "\n\n":"") + p;
+  function run(){
+    if(i <= t.length){
+      hudText.textContent = t.slice(0, i++);
+      hudTimer = setTimeout(run, 26);
     }
   }
-  if(buf.trim()) chunks.push(buf.trim());
-  return chunks.slice(0, 14); // keep page clean
+  run();
+
+  // diagram
+  hudSvg.innerHTML = buildDiagram(item.diagram);
+
+  // auto close
+  setTimeout(()=>{ portal.style.display="none"; }, 8500);
 }
 
-async function readPdfText(path){
-  // pdf.js config
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-  const loadingTask = pdfjsLib.getDocument(path);
-  const pdf = await loadingTask.promise;
-
-  let fullText = "";
-  for(let p=1; p<=pdf.numPages; p++){
-    const page = await pdf.getPage(p);
-    const content = await page.getTextContent();
-    const strings = content.items.map(it => it.str);
-    fullText += "\n\n" + strings.join(" ");
+/* ===== DIAGRAM BUILDER (neon sci-fi HUD) ===== */
+function gridLines(){
+  let s="";
+  for(let i=0;i<=10;i++){
+    s += `<line class="gridline" x1="0" y1="${i*22}" x2="420" y2="${i*22}"></line>`;
   }
-  return fullText;
+  for(let i=0;i<=10;i++){
+    s += `<line class="gridline" x1="${i*42}" y1="0" x2="${i*42}" y2="220"></line>`;
+  }
+  return s;
 }
 
-(async function initWhitepaper(){
-  try{
-    wpStatus.textContent = "Reading PDF… building HUD panels…";
-    const text = await readPdfText(PDF_PATH);
+function buildDiagram(type){
+  if(type==="core"){
+    return `
+      ${gridLines()}
+      <circle class="stroke" cx="210" cy="110" r="52"></circle>
+      <circle class="stroke" cx="210" cy="110" r="84" style="opacity:.55"></circle>
+      <circle class="stroke" cx="210" cy="110" r="112" style="opacity:.25"></circle>
 
-    const chunks = chunkText(text);
-    wpGrid.innerHTML = "";
+      <circle class="dot" cx="210" cy="110" r="5"></circle>
 
-    chunks.forEach((chunk, idx) => {
-      const title = `SECTION ${String(idx+1).padStart(2,"0")}`;
-      const tag = `PAGE DATA`;
-      const body = chunk.length > 520 ? chunk.slice(0,520) + "…" : chunk;
+      <path class="stroke" d="M210 110 L70 60" style="opacity:.65"></path>
+      <path class="stroke" d="M210 110 L350 60" style="opacity:.65"></path>
+      <path class="stroke" d="M210 110 L70 170" style="opacity:.65"></path>
+      <path class="stroke" d="M210 110 L350 170" style="opacity:.65"></path>
 
-      const sizeClass = (idx%3===0) ? "half" : (idx%5===0 ? "third" : "half");
-      wpGrid.appendChild(makePanel(title, tag, body, 100 + idx*77, sizeClass));
-    });
+      <circle class="dot" cx="70" cy="60" r="4"></circle>
+      <circle class="dot" cx="350" cy="60" r="4"></circle>
+      <circle class="dot" cx="70" cy="170" r="4"></circle>
+      <circle class="dot" cx="350" cy="170" r="4"></circle>
 
-    wpStatus.textContent = "Whitepaper loaded. Scroll to view all HUD panels.";
-  }catch(e){
-    wpStatus.textContent =
-      "ERROR loading PDF. Check file path and that the PDF is accessible on your site. (" +
-      (e && e.message ? e.message : "unknown") + ")";
+      <line class="scanline" x1="0" y1="10" x2="420" y2="10"></line>
+    `;
   }
-})();
+
+  if(type==="timeline"){
+    return `
+      ${gridLines()}
+      <path class="stroke" d="M60 120 L360 120"></path>
+      <circle class="dot" cx="90" cy="120" r="6"></circle>
+      <circle class="dot" cx="210" cy="120" r="6"></circle>
+      <circle class="dot" cx="330" cy="120" r="6"></circle>
+
+      <path class="stroke" d="M90 120 L90 70"></path>
+      <path class="stroke" d="M210 120 L210 70"></path>
+      <path class="stroke" d="M330 120 L330 70"></path>
+
+      <path class="stroke" d="M70 170 C110 140, 150 200, 190 160 S 270 120, 350 150" style="opacity:.6"></path>
+      <line class="scanline" x1="0" y1="10" x2="420" y2="10"></line>
+    `;
+  }
+
+  if(type==="meter"){
+    return `
+      ${gridLines()}
+      <path class="stroke" d="M90 160 A120 120 0 0 1 330 160"></path>
+      <path class="stroke" d="M90 160 A120 120 0 0 1 270 80" style="opacity:.55"></path>
+      <circle class="dot" cx="270" cy="80" r="5"></circle>
+      <path class="stroke" d="M60 190 L360 190" style="opacity:.35"></path>
+      <rect x="80" y="196" width="260" height="10" rx="6" ry="6" fill="rgba(255,215,0,.08)" stroke="rgba(255,215,0,.25)"></rect>
+      <rect x="80" y="196" width="170" height="10" rx="6" ry="6" fill="rgba(255,215,0,.35)"></rect>
+      <line class="scanline" x1="0" y1="10" x2="420" y2="10"></line>
+    `;
+  }
+
+  if(type==="shield"){
+    return `
+      ${gridLines()}
+      <path class="stroke" d="M210 35 L310 70 L300 140 C290 175 250 200 210 210 C170 200 130 175 120 140 L110 70 Z"></path>
+      <path class="stroke" d="M210 60 L210 190" style="opacity:.55"></path>
+      <path class="stroke" d="M160 110 L210 145 L270 90" style="opacity:.65"></path>
+      <line class="scanline" x1="0" y1="10" x2="420" y2="10"></line>
+    `;
+  }
+
+  // route
+  return `
+    ${gridLines()}
+    <circle class="dot" cx="70" cy="110" r="6"></circle>
+    <circle class="dot" cx="350" cy="70" r="6"></circle>
+    <circle class="dot" cx="350" cy="150" r="6"></circle>
+    <path class="stroke" d="M70 110 C140 50, 220 60, 350 70"></path>
+    <path class="stroke" d="M70 110 C140 170, 220 160, 350 150" style="opacity:.65"></path>
+    <line class="scanline" x1="0" y1="10" x2="420" y2="10"></line>
+  `;
+}
+
+/* ===== WHITEPAPER HUD (scroll) — REAL sections with diagrams ===== */
+const SECTIONS = [
+  {n:1, title:"Introduction", tag:"SECTION 1", size:"half",
+   text:"Ape Mood (APEM) is a community-driven, next-generation digital asset on BNB Smart Chain. It is designed as the foundation of a future ecosystem spanning blockchain technology, AI, digital platforms, and ethical real-world initiatives.",
+   diag:"core"
+  },
+  {n:2, title:"Ethical & Islamic Principles", tag:"SECTION 2", size:"half",
+   text:"The project focuses on ethical growth and avoids interest (riba), guaranteed returns, and exploitative practices. Real participation and responsible development are emphasized.",
+   diag:"shield"
+  },
+  {n:3, title:"Market Problem", tag:"SECTION 3", size:"third",
+   text:"Many crypto projects struggle due to uncontrolled supply, hype cycles, and dump culture. This creates instability and weak long-term foundations.",
+   diag:"route"
+  },
+  {n:4, title:"Ape Mood Solution", tag:"SECTION 4", size:"third",
+   text:"Ape Mood introduces a controlled, transparent approach: limited supply → community growth → ecosystem development. Build step-by-step with responsibility and transparency.",
+   diag:"timeline"
+  },
+  {n:5, title:"Token Details", tag:"SECTION 5", size:"third",
+   text:"Token Name: Ape Mood (APEM) • Chain: BNB Smart Chain • Total Supply: 150,000,000 • Decimals: 18 • BEP-20 compatible.",
+   diag:"meter"
+  },
+  {n:6, title:"Supply Strategy", tag:"SECTION 6", size:"half",
+   text:"Only a portion may be available for trading initially. Remaining supply can be released gradually to support healthy growth and stability.",
+   diag:"meter"
+  },
+  {n:7, title:"Ecosystem Expansion", tag:"SECTION 7", size:"half",
+   text:"As Ape Mood grows, the project aims to expand into digital platforms, AI-related technologies, and ethical real-world business opportunities.",
+   diag:"core"
+  },
+  {n:8, title:"Holder Benefits & Participation", tag:"SECTION 8", size:"half",
+   text:"If the ecosystem succeeds, holders may benefit via participation and ecosystem advantages that depend on overall project growth and progress (not guaranteed).",
+   diag:"route"
+  },
+  {n:9, title:"Roadmap", tag:"SECTION 9", size:"half",
+   text:"Phase 1: Token launch & community building. Phase 2: Digital platforms + AI exploration + ecosystem planning. Phase 3: Connect real-world businesses with blockchain and long-term expansion.",
+   diag:"timeline"
+  },
+  {n:10, title:"Security & Transparency", tag:"SECTION 10", size:"half",
+   text:"APEM is deployed on BNB Smart Chain. Transactions are recorded transparently on-chain and publicly verifiable. The contract follows standard token behavior.",
+   diag:"shield"
+  },
+  {n:11, title:"Disclaimer", tag:"SECTION 11", size:"half",
+   text:"This document is informational only. No guaranteed profits, fixed returns, or financial advice. Future integrations depend on success, market conditions, and development progress.",
+   diag:"shield"
+  }
+];
+
+function miniHud(diag){
+  // reuse same diagram builder but sized smaller
+  return `
+    <div class="miniHud">
+      <svg viewBox="0 0 420 130" preserveAspectRatio="none" aria-hidden="true">
+        ${gridLines().replaceAll("220","130")}
+        ${buildDiagram(diag)
+          .replace(/viewBox="0 0 420 220"/g,'viewBox="0 0 420 130"')
+          .replaceAll("220","130")}
+      </svg>
+    </div>
+  `;
+}
+
+function renderWhitepaper(){
+  const grid = document.getElementById("wpGrid");
+  grid.innerHTML = "";
+  SECTIONS.forEach((s, idx)=>{
+    const card = document.createElement("div");
+    card.className = `card ${s.size}`;
+    card.innerHTML = `
+      <div class="cardTop">
+        <div class="pill">${s.tag}</div>
+        <div class="pill">HUD • LIVE</div>
+      </div>
+      <h3>${s.n}. ${s.title}</h3>
+      <p>${s.text}</p>
+      ${miniHud(s.diag)}
+      <div class="btns" style="margin-top:12px">
+        <button class="small" onclick="openHUD('${idx%2===0?'intro':'roadmap'}')">Open HUD View</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+renderWhitepaper();
 </script>
 
 </body>
