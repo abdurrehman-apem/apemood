@@ -9,6 +9,26 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#000;color:#fff;overflow-x:hidden}
 
+/* MATRIX BACKGROUND */
+.matrix{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:#000;
+  overflow:hidden;
+}
+.matrix span{
+  position:absolute;
+  top:-100%;
+  color:#00ffd0;
+  font-family:monospace;
+  font-size:14px;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(120vh)}
+}
+
 /* HERO */
 .hero{
   min-height:100vh;
@@ -16,27 +36,35 @@ body{background:#000;color:#fff;overflow-x:hidden}
   display:flex;
   justify-content:center;
   align-items:center;
-  background:radial-gradient(circle at top,#0b0b0b,#000);
+  background:radial-gradient(circle at top,#050505,#000);
 }
 
 /* BOX */
 .box{
   width:min(900px,100%);
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.65);
   border:1px solid rgba(255,255,255,.15);
-  border-radius:20px;
-  padding:28px;
+  border-radius:22px;
+  padding:30px;
   text-align:center;
+  backdrop-filter:blur(6px);
 }
 
-/* TITLE */
+/* GLITCH TITLE */
 h1{
   color:#FFD700;
-  letter-spacing:4px;
-  font-size:2.8rem;
+  letter-spacing:5px;
+  font-size:3rem;
+  position:relative;
   text-shadow:0 0 40px rgba(255,215,0,.9);
+  animation:glitch 2.5s infinite;
 }
-@media(min-width:768px){h1{font-size:3.6rem}}
+@keyframes glitch{
+  0%,100%{transform:none}
+  20%{transform:skewX(2deg)}
+  40%{transform:skewX(-2deg)}
+}
+@media(min-width:768px){h1{font-size:3.8rem}}
 
 /* TYPE */
 .type{
@@ -80,59 +108,32 @@ h1{
   padding:6px 14px;font-weight:700;cursor:pointer;
 }
 
-/* ===== ROADMAP OVERLAY ===== */
+/* ROADMAP OVERLAY */
 .roadmap{
   position:fixed;
   inset:0;
   display:none;
   justify-content:center;
   align-items:center;
-  background:radial-gradient(circle,#030303,#000);
+  background:rgba(0,0,0,.95);
   z-index:9999;
-  overflow:hidden;
 }
-
-/* HACKER GRID SCAN */
-.roadmap::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(0,255,200,.08) 0px,
-      rgba(0,255,200,.08) 1px,
-      transparent 1px,
-      transparent 6px
-    );
-  animation:scan 1.1s linear infinite;
-}
-@keyframes scan{
-  from{background-position:0 0}
-  to{background-position:0 40px}
-}
-
 .roadmap-box{
-  position:relative;
   width:min(760px,92%);
-  background:rgba(5,5,5,.92);
+  background:#020202;
   border:2px solid #00ffd0;
   border-radius:22px;
-  padding:34px 30px;
-  box-shadow:0 0 80px rgba(0,255,200,.6);
-  animation:zoomIn .45s ease;
-}
-@keyframes zoomIn{
-  from{transform:scale(.85);opacity:0}
-  to{transform:scale(1);opacity:1}
+  padding:30px;
+  box-shadow:0 0 90px rgba(0,255,200,.7);
 }
 
-/* TERMINAL HEADER */
+/* TERMINAL */
 .terminal{
   font-family:monospace;
   color:#00ffd0;
-  margin-bottom:18px;
   font-size:.9rem;
+  white-space:pre-line;
+  margin-bottom:18px;
 }
 
 /* PHASE */
@@ -140,31 +141,25 @@ h1{
   display:none;
   margin:16px 0;
   padding:16px 18px;
-  border:1px solid rgba(0,255,200,.7);
+  border:1px solid rgba(0,255,200,.6);
   border-radius:16px;
-  animation:neonPulse 2.6s infinite;
+  animation:pulse 2.5s infinite;
 }
-@keyframes neonPulse{
-  50%{box-shadow:0 0 30px rgba(0,255,200,.85)}
-}
-.phase h3{
-  color:#00ffd0;
-  margin-bottom:6px;
-  letter-spacing:1px;
-}
+@keyframes pulse{50%{box-shadow:0 0 32px rgba(0,255,200,.9)}}
+.phase h3{color:#00ffd0;margin-bottom:6px}
 
 /* CONNECTOR */
 .connector{
   display:none;
   width:2px;height:22px;
   background:#00ffd0;margin:0 auto;
-  animation:flow 1.4s infinite;
 }
-@keyframes flow{50%{opacity:.25}}
 </style>
 </head>
 
 <body>
+
+<div class="matrix" id="matrix"></div>
 
 <div class="hero">
   <div class="box">
@@ -219,7 +214,17 @@ h1{
 </div>
 
 <script>
-/* HERO TYPING */
+/* MATRIX */
+const matrix=document.getElementById("matrix");
+for(let i=0;i<70;i++){
+  const s=document.createElement("span");
+  s.textContent=Math.random().toString(36).slice(2,8);
+  s.style.left=Math.random()*100+"%";
+  s.style.animationDuration=2+Math.random()*4+"s";
+  matrix.appendChild(s);
+}
+
+/* HERO TYPE */
 const typed=document.getElementById("typed");
 let timer;
 function typeText(text){
@@ -237,7 +242,7 @@ function typeText(text){
 typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
 
 function showIntro(){
-  typeText("Ape Mood (APEM) focuses on transparency, responsible growth, and long-term vision.");
+  typeText("Ape Mood (APEM) focuses on transparency, innovation, and long-term ecosystem vision.");
 }
 function showSupply(){
   typeText("The total supply of Ape Mood is fixed at 150 million tokens. No additional tokens can ever be minted.");
@@ -246,35 +251,35 @@ function showExpect(){
   typeText("We encourage responsible participation and a long-term holding mindset.");
 }
 
-/* ROADMAP LOGIC */
+/* ROADMAP */
 function showRoadmap(){
   const r=document.getElementById("roadmap");
   const t=document.getElementById("terminal");
   r.style.display="flex";
-
   t.textContent="";
+
   const lines=[
-    "> Initializing Ape Mood roadmap...",
-    "> Loading AI modules...",
-    "> Synchronizing ecosystem vision...",
+    "> Booting Ape Mood AI...",
+    "> Establishing secure connection...",
+    "> Loading roadmap modules...",
     "> Access granted."
   ];
   let i=0;
-  function typeTerminal(){
+  function boot(){
     if(i<lines.length){
       t.textContent+=lines[i++]+"\n";
-      setTimeout(typeTerminal,500);
+      setTimeout(boot,600);
     }
   }
-  typeTerminal();
+  boot();
 
-  setTimeout(()=>document.getElementById("p1").style.display="block",1600);
-  setTimeout(()=>document.getElementById("c1").style.display="block",2200);
-  setTimeout(()=>document.getElementById("p2").style.display="block",2800);
-  setTimeout(()=>document.getElementById("c2").style.display="block",3400);
-  setTimeout(()=>document.getElementById("p3").style.display="block",4000);
+  setTimeout(()=>p1.style.display="block",1800);
+  setTimeout(()=>c1.style.display="block",2500);
+  setTimeout(()=>p2.style.display="block",3200);
+  setTimeout(()=>c2.style.display="block",3900);
+  setTimeout(()=>p3.style.display="block",4600);
 
-  setTimeout(()=>{r.style.display="none"},6000);
+  setTimeout(()=>r.style.display="none",7000);
 }
 
 function copyCA(){
