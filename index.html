@@ -6,89 +6,103 @@
 <title>Ape Mood (APEM)</title>
 
 <style>
+:root{
+  --neon:#FFD700;
+}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
-body{background:#000;color:#FFD700;overflow-x:hidden}
+body{background:#000;color:var(--neon);overflow-x:hidden}
 
 /* HERO */
 .hero{
   position:relative;
   min-height:100svh;
   padding:90px 20px 40px;
-  background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
-  background-size:contain;
-  background-position:center bottom;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,215,0,.18),
+      rgba(255,215,0,0)
+    ),
+    url("assets/APEM_Hero_Mobile_1080x1350.jpg") center bottom/contain no-repeat;
+  background-blend-mode:overlay;
 }
 @media(min-width:768px){
-  .hero{
-    background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
-    background-position:center;
-    background-attachment:fixed;
-  }
+.hero{
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,215,0,.18),
+      rgba(255,215,0,0)
+    ),
+    url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg") center/cover no-repeat;
+}
 }
 
-/* VERTICAL NEON LINES (BEHIND WALLPAPER FEEL) */
-.hero::before{
+/* BACKGROUND LINES (BEHIND IMAGE) */
+.hero::after{
   content:"";
   position:absolute;
   inset:0;
   background:
     repeating-linear-gradient(
-      90deg,
-      rgba(255,215,0,.12),
-      rgba(255,215,0,.12) 1px,
+      0deg,
+      rgba(255,215,0,.25),
+      rgba(255,215,0,.25) 1px,
       transparent 1px,
-      transparent 90px
+      transparent 80px
     );
-  opacity:.55;
-  animation:linesDown 9s linear infinite;
-  mix-blend-mode:overlay;
-  pointer-events:none;
+  animation:bgLines 7s linear infinite;
+  opacity:.45;
+  z-index:0;
 }
-@keyframes linesDown{
+@keyframes bgLines{
   from{background-position:0 -100%}
   to{background-position:0 100%}
 }
 
-/* CONTENT */
+/* CONTENT BOX */
 .box{
+  position:relative;
+  z-index:2;
   width:min(900px,100%);
-  background:rgba(0,0,0,.4);
-  border:1px solid rgba(255,215,0,.3);
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,215,0,.4);
   border-radius:22px;
   padding:28px;
   text-align:center;
-  box-shadow:0 0 45px rgba(255,215,0,.25);
-  position:relative;
-  z-index:2;
+  box-shadow:0 0 60px rgba(255,215,0,.35);
 }
 
 /* TITLE */
 h1{
+  font-size:2.4rem;
   letter-spacing:4px;
-  font-size:2.3rem;
-  text-shadow:0 0 14px rgba(255,215,0,.9),0 0 30px rgba(255,215,0,.5);
+  animation:glow 3s infinite;
 }
-@media(min-width:768px){h1{font-size:3.4rem}}
+@keyframes glow{
+  50%{text-shadow:0 0 35px var(--neon)}
+}
 
-/* TYPE TEXT */
+/* TYPING */
 .type{
   margin:18px auto;
   max-width:760px;
-  font-size:1.05rem;
-  line-height:1.7;
   min-height:3.8em;
-  color:#ffeaa7;
-  text-shadow:0 0 12px rgba(255,215,0,.55);
+  line-height:1.7;
+  animation:textPulse 4s infinite;
+}
+@keyframes textPulse{
+  50%{text-shadow:0 0 18px var(--neon)}
 }
 .cursor{
   display:inline-block;
   width:8px;
   height:1.2em;
-  background:#FFD700;
+  background:var(--neon);
   margin-left:4px;
   animation:blink .8s infinite;
 }
@@ -100,53 +114,40 @@ h1{
   justify-content:center;
   gap:12px;
   flex-wrap:wrap;
-  margin-top:10px;
+  margin-top:12px;
 }
 .btn,.small{
   border-radius:999px;
   cursor:pointer;
-  transition:all .25s ease;
+  color:#000;
+  background:linear-gradient(135deg,var(--neon),#ffb800);
+  box-shadow:0 0 22px rgba(255,215,0,.8);
+  transition:transform .25s, box-shadow .25s;
+  animation:btnGlow 3s infinite;
+}
+@keyframes btnGlow{
+  50%{box-shadow:0 0 40px rgba(255,215,0,1)}
 }
 .btn{
   padding:14px 30px;
   font-weight:900;
-  color:#000;
-  background:linear-gradient(135deg,#FFD700,#FFB800);
-  box-shadow:0 0 18px rgba(255,215,0,.6);
-  animation:btnPulse 3s infinite;
-}
-@keyframes btnPulse{
-  50%{box-shadow:0 0 32px rgba(255,215,0,.9)}
 }
 .small{
   padding:8px 16px;
   font-size:.85rem;
-  background:rgba(0,0,0,.5);
-  color:#FFD700;
-  border:1px solid rgba(255,215,0,.6);
-  box-shadow:0 0 14px rgba(255,215,0,.35);
+  background:rgba(0,0,0,.6);
+  color:var(--neon);
+  border:1px solid var(--neon);
 }
-.small:hover{box-shadow:0 0 26px rgba(255,215,0,.7)}
+.btn:hover,.small:hover{
+  transform:scale(1.06);
+}
 
 /* BUY */
 .buy{
-  margin-top:12px;
+  margin-top:14px;
   font-weight:900;
-  letter-spacing:1px;
-  text-shadow:0 0 16px rgba(255,215,0,.85);
-}
-
-/* CONTRACT */
-.contract{
-  margin-top:16px;
-  padding:12px;
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,215,0,.35);
-  border-radius:14px;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
+  animation:glow 3s infinite;
 }
 
 /* PORTAL */
@@ -156,40 +157,29 @@ h1{
   display:none;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.88);
+  background:rgba(0,0,0,.9);
   z-index:9999;
 }
 .portalBox{
   width:min(860px,92%);
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(255,215,0,.45);
+  background:rgba(0,0,0,.65);
+  border:1px solid var(--neon);
   border-radius:22px;
-  padding:22px;
-  animation:portalIn .6s ease forwards;
-  box-shadow:0 0 90px rgba(255,215,0,.35);
+  padding:24px;
+  box-shadow:0 0 80px rgba(255,215,0,.45);
+  animation:portalIn .6s ease;
 }
 @keyframes portalIn{
-  from{transform:scale(.85) translateY(40px);opacity:0}
-  to{transform:scale(1) translateY(0);opacity:1}
-}
-.portalTitle{
-  font-weight:900;
-  letter-spacing:1px;
-  margin-bottom:10px;
-}
-.portalText{
-  color:#ffeaa7;
-  line-height:1.75;
-  text-shadow:0 0 10px rgba(255,215,0,.15);
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
 }
 .close{
-  margin-top:14px;
-  padding:6px 14px;
+  margin-top:16px;
+  padding:6px 16px;
   background:transparent;
-  color:#FFD700;
-  border:1px solid rgba(255,215,0,.5);
+  color:var(--neon);
+  border:1px solid var(--neon);
   border-radius:999px;
-  cursor:pointer;
 }
 </style>
 </head>
@@ -217,94 +207,70 @@ h1{
     </div>
 
     <div class="buy">BUY AND HOLD</div>
-
-    <div class="contract">
-      <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
-      <button class="small" onclick="copyCA()">Copy</button>
-      <span id="copyMsg"></span>
-    </div>
   </div>
 </div>
 
-<!-- PORTAL -->
 <div class="portal" id="portal">
   <div class="portalBox">
-    <div class="portalTitle" id="pTitle"></div>
-    <div class="portalText" id="pText"></div>
+    <div id="pText"></div>
     <button class="close" onclick="closePortal()">Close</button>
   </div>
 </div>
 
 <script>
-/* LIGHT KEYBOARD SOUND */
-let audioCtx;
-function keySound(){
-  try{
-    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator();
-    const g=audioCtx.createGain();
-    o.type="square";
-    o.frequency.value=900;
-    g.gain.value=0.02;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start();
-    o.stop(audioCtx.currentTime+0.02);
-  }catch(e){}
+/* STABLE TYPING SOUND */
+let audioCtx=null;
+function playKey(){
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  }
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.type="square";
+  osc.frequency.value=800;
+  gain.gain.value=0.015;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime+0.015);
 }
 
-/* TYPING */
+/* TYPING ENGINE */
 const typed=document.getElementById("typed");
-let timer;
-function typeText(el,text){
-  clearTimeout(timer);
-  el.textContent="";
+let typingTimer;
+function typeText(text){
+  clearTimeout(typingTimer);
+  typed.textContent="";
   let i=0;
-  (function run(){
-    if(i<=text.length){
-      el.textContent=text.slice(0,i++);
-      keySound();
-      timer=setTimeout(run,60);
+  function run(){
+    if(i<text.length){
+      typed.textContent+=text[i++];
+      playKey();
+      typingTimer=setTimeout(run,60);
     }
-  })();
+  }
+  run();
 }
-typeText(typed,"Ape Mood (APEM) is a community-driven, long-term digital asset built on BNB Smart Chain.");
+typeText("Ape Mood (APEM) is a community-driven, long-term digital asset built on BNB Smart Chain.");
 
-/* PORTAL CONTENT (REAL EXPLANATION) */
+/* PORTALS */
 const DATA={
-intro:{
-title:"Token Introduction",
-text:"Ape Mood (APEM) is designed as a long-term, community-driven digital asset. It focuses on transparency, responsible growth, and building a real ecosystem instead of short-term hype."
-},
-road:{
-title:"Road Map",
-text:"Phase 1 focuses on token launch and community building. Phase 2 expands into digital platforms and AI exploration. Phase 3 connects real-world businesses with blockchain for long-term expansion."
-},
-supply:{
-title:"Supply Details",
-text:"The total supply of Ape Mood is fixed at 150 million tokens. There is no minting or inflation mechanism. Supply management is designed to support stability and healthy growth."
-},
-expect:{
-title:"Our Expectations",
-text:"Participants are encouraged to adopt a calm, long-term mindset. There are no guaranteed profits. Growth depends on development progress, market conditions, and community support."
-}
+intro:"Ape Mood is built for transparency, responsibility, and long-term ecosystem growth.",
+road:"Phase 1 focuses on token launch and community. Phase 2 expands into AI and digital platforms. Phase 3 connects real-world businesses with blockchain.",
+supply:"Total supply is fixed at 150 million tokens. No minting, no inflation, no hidden mechanics.",
+expect:"There are no guaranteed profits. Growth depends on real development, market conditions, and community participation."
 };
 
 const portal=document.getElementById("portal");
-const pTitle=document.getElementById("pTitle");
 const pText=document.getElementById("pText");
 
-function openPortal(key){
+function openPortal(k){
   portal.style.display="flex";
-  pTitle.textContent=DATA[key].title;
-  typeText(pText,DATA[key].text);
+  typeText(DATA[k]);
   setTimeout(()=>portal.style.display="none",10000);
 }
-function closePortal(){portal.style.display="none"}
-
-function copyCA(){
-  navigator.clipboard.writeText(ca.innerText);
-  copyMsg.innerText="Copied";
-  setTimeout(()=>copyMsg.innerText="",1200);
+function closePortal(){
+  portal.style.display="none";
 }
 </script>
 
