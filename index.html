@@ -15,7 +15,11 @@ body{
 }
 
 /* MATRIX */
-canvas{position:fixed;inset:0;z-index:-2}
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+}
 
 /* HERO */
 .hero{
@@ -26,7 +30,7 @@ canvas{position:fixed;inset:0;z-index:-2}
   padding:80px 20px;
 }
 
-/* BOX */
+/* MAIN BOX */
 .box{
   width:min(900px,100%);
   background:rgba(0,0,0,.65);
@@ -46,17 +50,29 @@ h1{
 }
 @keyframes flicker{36%{opacity:.85}}
 
-/* TEXT */
-.type{margin:18px auto;min-height:3.6em;max-width:780px}
+/* TYPING */
+.type{
+  margin:18px auto;
+  min-height:3.6em;
+  max-width:780px;
+}
 .cursor{
-  display:inline-block;width:8px;height:1.2em;
-  background:#00ffd0;margin-left:4px;
+  display:inline-block;
+  width:8px;height:1.2em;
+  background:#00ffd0;
+  margin-left:4px;
   animation:blink .8s infinite;
 }
 @keyframes blink{50%{opacity:0}}
 
 /* BUTTONS */
-.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.btns{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
 .btn,.small{
   padding:12px 26px;
   border:1px solid #00ffd0;
@@ -69,7 +85,8 @@ h1{
 }
 .btn::after,.small::after{
   content:"";
-  position:absolute;inset:0;
+  position:absolute;
+  inset:0;
   background:linear-gradient(120deg,transparent,rgba(0,255,200,.3),transparent);
   transform:translateX(-100%);
   animation:scan 3s infinite;
@@ -78,15 +95,20 @@ h1{
 
 /* CONTRACT */
 .contract{
-  margin-top:18px;padding:12px;
+  margin-top:18px;
+  padding:12px;
   border:1px solid rgba(0,255,200,.4);
   border-radius:10px;
-  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 /* PORTAL */
 .portal{
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
   display:none;
   justify-content:center;
   align-items:center;
@@ -100,30 +122,35 @@ h1{
   padding:26px;
   box-shadow:0 0 90px rgba(0,255,200,.8);
 }
-.portal-text{white-space:pre-line;margin-top:16px}
+.portal-text{
+  white-space:pre-line;
+  margin-top:16px;
+}
 
 /* DIAGRAMS */
-.diagram{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.diagram{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+}
 .node{
-  width:70px;height:70px;
+  width:60px;height:60px;
   border:2px solid #00ffd0;
   border-radius:50%;
   animation:spin 4s linear infinite;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-
 .bar{
-  width:30px;height:80px;
-  border:1px solid #00ffd0;
+  width:26px;height:80px;
+  border:2px solid #00ffd0;
   animation:grow 2s infinite alternate;
 }
-@keyframes grow{to{height:120px}}
-
 .wave{
   width:100px;height:40px;
   border-bottom:2px solid #00ffd0;
   animation:wave 1.5s infinite alternate;
 }
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes grow{to{height:120px}}
 @keyframes wave{to{transform:translateY(10px)}}
 </style>
 </head>
@@ -169,81 +196,97 @@ h1{
 </div>
 
 <script>
-/* MATRIX */
-const c=document.getElementById("matrix"),x=c.getContext("2d");
-function rs(){c.width=innerWidth;c.height=innerHeight}
-rs();addEventListener("resize",rs);
+/* MATRIX BACKGROUND */
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
 const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%";
 const size=14;
-let cols=Math.floor(c.width/size);
+let cols=Math.floor(canvas.width/size);
 let drops=Array(cols).fill(0);
+
 (function draw(){
-  x.fillStyle="rgba(0,0,0,.08)";
-  x.fillRect(0,0,c.width,c.height);
-  x.fillStyle="#00ffd0";
-  x.font=size+"px monospace";
+  ctx.fillStyle="rgba(0,0,0,.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#00ffd0";
+  ctx.font=size+"px monospace";
   drops.forEach((y,i)=>{
-    x.fillText(chars[Math.random()*chars.length|0],i*size,y*size);
-    if(y*size>c.height&&Math.random()>.98)drops[i]=0;
+    ctx.fillText(chars[Math.random()*chars.length|0],i*size,y*size);
+    if(y*size>canvas.height&&Math.random()>.98)drops[i]=0;
     drops[i]++;
   });
   requestAnimationFrame(draw);
 })();
 
-function hackType(){
-  const bufferSize = audio.sampleRate * 0.02;
-  const buffer = audio.createBuffer(1, bufferSize, audio.sampleRate);
-  const data = buffer.getChannelData(0);
-
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = (Math.random() * 2 - 1) * 0.3;
+/* AUDIO CONTEXT (SAFE INIT) */
+let audioCtx;
+function getAudio(){
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
   }
-
-  const noise = audio.createBufferSource();
-  noise.buffer = buffer;
-
-  const filter = audio.createBiquadFilter();
-  filter.type = "highpass";
-  filter.frequency.value = 1200;
-
-  const gain = audio.createGain();
-  gain.gain.setValueAtTime(0.08, audio.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + 0.025);
-
-  noise.connect(filter);
-  filter.connect(gain);
-  gain.connect(audio.destination);
-
-  noise.start();
+  return audioCtx;
 }
 
+/* REAL KEYBOARD TYPING SOUND */
+function typeSound(){
+  const ctx=getAudio();
+  const bufferSize=ctx.sampleRate*0.02;
+  const buffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){
+    data[i]=(Math.random()*2-1)*0.25;
+  }
+  const src=ctx.createBufferSource();
+  src.buffer=buffer;
+
+  const filter=ctx.createBiquadFilter();
+  filter.type="highpass";
+  filter.frequency.value=1000;
+
+  const gain=ctx.createGain();
+  gain.gain.value=0.07;
+
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  src.start();
+}
 
 /* MAIN TYPING */
 const typed=document.getElementById("typed");
-function typeMain(t){
+function typeMain(text){
   typed.textContent="";
   let i=0;
-  (function r(){
-    if(i<=t.length){
-      typed.textContent=t.slice(0,i++);
-      hackType();
-      setTimeout(r,35);
+  (function run(){
+    if(i<=text.length){
+      typed.textContent=text.slice(0,i++);
+      typeSound();
+      setTimeout(run,40);
     }
   })();
 }
 typeMain(":: Initializing Ape Mood Protocol...");
 
-/* PORTAL */
+/* PORTAL LOGIC */
 const portal=document.getElementById("portal");
 const portalText=document.getElementById("portalText");
 const diagram=document.getElementById("diagram");
 
 const content={
-  intro:":: Ape Mood protocol overview loaded.",
-  roadmap:":: Loading phased execution pipeline.",
-  supply:":: Verifying fixed supply and locked structure.",
-  expect:":: Community signal stability parameters active.",
-  swap:":: Secure swap gateway handshake in progress."
+  intro:":: Ape Mood is a community-driven digital asset built for long-term evolution.",
+  roadmap:
+`PHASE 1 :: Token launch and community building
+PHASE 2 :: Digital platforms, AI exploration, ecosystem planning
+PHASE 3 :: Real-world blockchain integration and long-term expansion`,
+  supply:":: Total supply fixed at 150,000,000 APEM. No minting. No inflation.",
+  expect:":: Focused on responsible participation and sustainable ecosystem growth.",
+  swap:":: Secure swap gateway initializing..."
 };
 
 function openPortal(key){
@@ -257,12 +300,13 @@ function openPortal(key){
   if(key==="expect") diagram.innerHTML='<div class="diagram"><div class="wave"></div><div class="wave"></div></div>';
   if(key==="swap") diagram.innerHTML='<div class="diagram"><div class="node"></div></div>';
 
-  let txt=content[key],i=0;
-  (function r(){
+  const txt=content[key];
+  let i=0;
+  (function run(){
     if(i<=txt.length){
       portalText.textContent=txt.slice(0,i++);
-      hackType();
-      setTimeout(r,30);
+      typeSound();
+      setTimeout(run,35);
     }
   })();
 
