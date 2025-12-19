@@ -7,10 +7,11 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
-body{background:#000;color:#fff;overflow-x:hidden}
+body{background:#000;color:#FFD700;overflow-x:hidden}
 
 /* HERO */
 .hero{
+  position:relative;
   min-height:100svh;
   padding:90px 20px 40px;
   background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
@@ -28,22 +29,46 @@ body{background:#000;color:#fff;overflow-x:hidden}
   }
 }
 
+/* NEON LINES OVERLAY */
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      120deg,
+      rgba(255,215,0,.04),
+      rgba(255,215,0,.04) 1px,
+      transparent 1px,
+      transparent 60px
+    );
+  animation:scan 12s linear infinite;
+  pointer-events:none;
+}
+@keyframes scan{
+  from{background-position:0 0}
+  to{background-position:800px 800px}
+}
+
 /* CONTENT */
 .box{
+  position:relative;
   width:min(900px,100%);
   background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,215,0,.25);
   border-radius:20px;
   padding:28px;
   text-align:center;
+  box-shadow:0 0 40px rgba(255,215,0,.25);
 }
 
 /* TITLE */
 h1{
-  color:#FFD700;
   letter-spacing:4px;
   font-size:2.3rem;
-  text-shadow:0 0 25px rgba(255,215,0,.8);
+  text-shadow:
+    0 0 10px rgba(255,215,0,.8),
+    0 0 25px rgba(255,215,0,.6);
 }
 @media(min-width:768px){h1{font-size:3.4rem}}
 
@@ -54,6 +79,7 @@ h1{
   font-size:1.05rem;
   line-height:1.7;
   min-height:3.8em;
+  text-shadow:0 0 12px rgba(255,215,0,.7);
 }
 .cursor{
   display:inline-block;
@@ -80,25 +106,28 @@ h1{
   text-decoration:none;
   color:#000;
   background:linear-gradient(135deg,#FFD700,#FFB800);
-  box-shadow:0 0 22px rgba(255,215,0,.7);
-  cursor:pointer;
+  box-shadow:
+    0 0 18px rgba(255,215,0,.6),
+    inset 0 0 8px rgba(255,255,255,.4);
+  border:1px solid rgba(255,255,255,.35);
 }
 .small{
   padding:8px 14px;
   font-size:.85rem;
-  background:rgba(255,255,255,.1);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.4);
+  color:#FFD700;
+  border:1px solid rgba(255,215,0,.5);
   border-radius:999px;
+  box-shadow:0 0 10px rgba(255,215,0,.4);
   cursor:pointer;
 }
 
 /* Buy text */
 .buy{
   margin-top:12px;
-  color:#FFD700;
   font-weight:800;
   letter-spacing:1px;
+  text-shadow:0 0 14px rgba(255,215,0,.8);
 }
 
 /* contract */
@@ -106,7 +135,7 @@ h1{
   margin-top:16px;
   padding:12px;
   background:rgba(0,0,0,.3);
-  border:1px solid rgba(255,255,255,.15);
+  border:1px solid rgba(255,215,0,.35);
   border-radius:14px;
   display:flex;
   justify-content:center;
@@ -120,6 +149,24 @@ h1{
   padding:6px 12px;
   font-weight:800;
   cursor:pointer;
+}
+
+/* NEON DIAGRAM */
+.diagram{
+  margin-top:14px;
+  display:flex;
+  justify-content:center;
+  gap:14px;
+}
+.node{
+  width:18px;height:18px;
+  border:2px solid #FFD700;
+  border-radius:50%;
+  box-shadow:0 0 12px #FFD700;
+  animation:pulse 1.8s infinite;
+}
+@keyframes pulse{
+  50%{transform:scale(1.6);opacity:.4}
 }
 </style>
 </head>
@@ -136,19 +183,21 @@ h1{
 
     <!-- MAIN BUTTONS -->
     <div class="btns">
-      <a class="btn" href="#">Swap APEM</a>
+      <a class="btn" href="#">Swap</a>
       <a class="btn" href="APE_MOOD_APEM_Whitepaper_v4.pdf" target="_blank">Whitepaper</a>
     </div>
 
-    <!-- INFO BUTTONS (EXACT OLD SET) -->
+    <!-- INFO BUTTONS -->
     <div class="btns">
       <button class="small" onclick="showIntro()">Token Intro</button>
-      <button class="small" onclick="showVision()">Projects</button>
+      <button class="small" onclick="showRoad()">Road Map</button>
       <button class="small" onclick="showSupply()">Supply Details</button>
       <button class="small" onclick="showExpect()">Our Expectations</button>
     </div>
 
     <div class="buy">BUY AND HOLD</div>
+
+    <div class="diagram" id="diagram"></div>
 
     <div class="contract">
       <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
@@ -159,56 +208,47 @@ h1{
 </div>
 
 <script>
-/* VERY LIGHT TYPING CLICK (OPTIONAL) */
-let ctx;
-function typeSound(){
-  try{
-    if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator();
-    const g=ctx.createGain();
-    o.frequency.value=700;
-    g.gain.value=0.02;
-    o.connect(g); g.connect(ctx.destination);
-    o.start();
-    o.stop(ctx.currentTime+0.02);
-  }catch(e){}
-}
-
-/* TYPING SYSTEM */
+/* TYPING */
 const typed=document.getElementById("typed");
+const diagram=document.getElementById("diagram");
 let timer;
 
 function typeText(text){
   clearTimeout(timer);
+  diagram.innerHTML="";
   typed.textContent="";
   let i=0;
   function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
-      typeSound();
-      timer=setTimeout(run,60);
+      timer=setTimeout(run,55);
     }
   }
   run();
+
+  // neon diagram
+  for(let j=0;j<5;j++){
+    const n=document.createElement("div");
+    n.className="node";
+    diagram.appendChild(n);
+  }
 }
 
-/* DEFAULT TEXT */
-typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
+typeText("Ape Mood (APEM) is a community-driven digital asset built on BNB Smart Chain.");
 
 function showIntro(){
-  typeText("Ape Mood (APEM) is a community-driven digital asset designed for transparency and long-term growth.");
+  typeText("Ape Mood is designed for transparency, community strength, and long-term growth.");
 }
-function showVision(){
-  typeText("Projects include blockchain development, AI exploration, and future digital platforms.");
+function showRoad(){
+  typeText("Phase 1: Token launch and community building. Phase 2: Digital platforms and AI exploration. Phase 3: Real-world blockchain expansion.");
 }
 function showSupply(){
-  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No minting or inflation mechanisms exist.");
+  typeText("Total supply is fixed at 150 million tokens. No minting, no inflation.");
 }
 function showExpect(){
-  typeText("We encourage responsible participation, patience, and a long-term mindset.");
+  typeText("We encourage calm participation, patience, and a long-term mindset.");
 }
 
-/* COPY */
 function copyCA(){
   navigator.clipboard.writeText(ca.innerText);
   copyMsg.innerText="Copied";
