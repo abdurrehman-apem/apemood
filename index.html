@@ -198,40 +198,40 @@ let drops=Array(cols).fill(0);
 
 /* AUDIO CONTEXT */
 let audioCtx;
-function audio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function audio(){
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
 
-/* SCI-FI MOVIE KEYBOARD TYPING SOUND */
+/* REAL KEYBOARD-LIKE TYPING SOUND (NO TONE) */
 function typeSound(){
   const a=audio();
 
-  /* key click */
-  const osc=a.createOscillator();
-  osc.type="triangle";
-  osc.frequency.value=1400;
-
-  const clickGain=a.createGain();
-  clickGain.gain.setValueAtTime(0.04,a.currentTime);
-  clickGain.gain.exponentialRampToValueAtTime(0.001,a.currentTime+0.03);
-
-  /* finger noise */
-  const buffer=a.createBuffer(1,a.sampleRate*0.015,a.sampleRate);
+  const length=a.sampleRate*0.018;
+  const buffer=a.createBuffer(1,length,a.sampleRate);
   const data=buffer.getChannelData(0);
-  for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*0.15;
-  const noise=a.createBufferSource();
-  noise.buffer=buffer;
+
+  for(let i=0;i<length;i++){
+    data[i]=(Math.random()*2-1)*0.35;
+  }
+
+  const src=a.createBufferSource();
+  src.buffer=buffer;
 
   const filter=a.createBiquadFilter();
-  filter.type="bandpass";
-  filter.frequency.value=1800;
+  filter.type="lowpass";
+  filter.frequency.value=2200;
 
-  osc.connect(clickGain);
-  noise.connect(filter);
-  filter.connect(clickGain);
-  clickGain.connect(a.destination);
+  const gain=a.createGain();
+  gain.gain.value=0.06;
 
-  osc.start();
-  noise.start();
-  osc.stop(a.currentTime+0.03);
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(a.destination);
+
+  src.start();
 }
 
 /* MAIN TYPING */
@@ -243,7 +243,7 @@ function typeMain(text){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
       typeSound();
-      setTimeout(run,38);
+      setTimeout(run,40);
     }
   })();
 }
