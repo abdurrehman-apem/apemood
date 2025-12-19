@@ -13,26 +13,17 @@ body{background:#000;color:#fff;overflow-x:hidden}
 .hero{
   min-height:100svh;
   padding:90px 20px 40px;
-  background:#000 url("assets/APEM_Hero_Mobile_1080x1350.jpg") no-repeat;
-  background-size:contain;
-  background-position:center bottom;
+  background:#000;
   display:flex;
   justify-content:center;
   align-items:center;
-}
-@media(min-width:768px){
-  .hero{
-    background-image:url("assets/APEM_Hero_Desktop_1920x1080_NO_CROP.jpg");
-    background-position:center;
-    background-attachment:fixed;
-  }
 }
 
 /* CONTENT */
 .box{
   width:min(900px,100%);
-  background:rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.12);
   border-radius:20px;
   padding:28px;
   text-align:center;
@@ -42,12 +33,10 @@ body{background:#000;color:#fff;overflow-x:hidden}
 h1{
   color:#FFD700;
   letter-spacing:4px;
-  font-size:2.3rem;
-  text-shadow:0 0 25px rgba(255,215,0,.8);
-  animation:goldGlow 3s infinite;
+  font-size:2.4rem;
+  text-shadow:0 0 30px rgba(255,215,0,.9);
 }
 @media(min-width:768px){h1{font-size:3.4rem}}
-@keyframes goldGlow{50%{text-shadow:0 0 45px rgba(255,215,0,1)}}
 
 /* TYPE TEXT */
 .type{
@@ -82,12 +71,11 @@ h1{
   text-decoration:none;
   color:#000;
   background:linear-gradient(135deg,#FFD700,#FFB800);
-  box-shadow:0 0 22px rgba(255,215,0,.7);
 }
 .small{
   padding:8px 14px;
   font-size:.85rem;
-  background:rgba(255,255,255,.1);
+  background:rgba(255,255,255,.12);
   color:#fff;
   border:1px solid rgba(255,255,255,.25);
   cursor:pointer;
@@ -105,8 +93,8 @@ h1{
 .contract{
   margin-top:16px;
   padding:12px;
-  background:rgba(0,0,0,.3);
-  border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.2);
   border-radius:14px;
   display:flex;
   justify-content:center;
@@ -122,6 +110,57 @@ h1{
   cursor:pointer;
 }
 
+/* ROADMAP OVERLAY */
+.roadmap{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.roadmap-box{
+  border:2px solid #FFD700;
+  border-radius:20px;
+  padding:30px;
+  width:min(700px,90%);
+  background:linear-gradient(180deg,#050505,#000);
+  box-shadow:0 0 60px rgba(255,215,0,.6);
+  animation:zoomIn .5s ease;
+}
+
+@keyframes zoomIn{
+  from{transform:scale(.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.phase{
+  margin:16px 0;
+  padding:14px 18px;
+  border:1px solid rgba(255,215,0,.7);
+  border-radius:14px;
+  position:relative;
+  animation:pulseGlow 2.5s infinite;
+}
+
+@keyframes pulseGlow{
+  50%{box-shadow:0 0 25px rgba(255,215,0,.8)}
+}
+
+.phase h3{
+  color:#FFD700;
+  margin-bottom:6px;
+}
+
+.line{
+  width:2px;
+  height:20px;
+  background:#FFD700;
+  margin:10px auto;
+}
+
 /* INFO */
 section{
   padding:80px 20px;
@@ -129,46 +168,6 @@ section{
   text-align:center;
 }
 .info{max-width:900px;margin:auto;opacity:.9;line-height:1.8}
-.info p{margin:6px 0}
-
-/* PROJECT DIAGRAM */
-.diagram{
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,.8);
-  z-index:9999;
-}
-.diagram-box{
-  background:#050505;
-  border:2px solid #FFD700;
-  border-radius:18px;
-  padding:26px 34px;
-  text-align:center;
-  box-shadow:0 0 40px rgba(255,215,0,.6);
-  animation:pop .4s ease;
-}
-@keyframes pop{
-  from{transform:scale(.85);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-.node{
-  padding:10px 18px;
-  border-radius:999px;
-  border:1px solid #FFD700;
-  margin:8px auto;
-  width:max-content;
-  font-weight:700;
-  color:#FFD700;
-}
-.line{
-  height:18px;
-  width:2px;
-  background:#FFD700;
-  margin:0 auto;
-}
 </style>
 </head>
 
@@ -189,7 +188,7 @@ section{
 
     <div class="btns">
       <button class="small" onclick="showIntro()">Token Intro</button>
-      <button class="small" onclick="showProjects()">Projects</button>
+      <button class="small" onclick="showRoadmap()">Road Map</button>
       <button class="small" onclick="showSupply()">Supply Details</button>
       <button class="small" onclick="showExpect()">Our Expectations</button>
     </div>
@@ -207,22 +206,28 @@ section{
 <section>
   <div class="info">
     <p><b>Token:</b> Ape Mood (APEM)</p>
-    <p><b>Chain:</b> BNB Smart Chain (BEP-20)</p>
+    <p><b>Chain:</b> BNB Smart Chain</p>
     <p><b>Total Supply:</b> 150,000,000</p>
-    <p><b>Compatibility:</b> EVM / ERC-20</p>
   </div>
 </section>
 
-<!-- PROJECT DIAGRAM -->
-<div id="diagram" class="diagram">
-  <div class="diagram-box">
-    <div class="node">APE MOOD</div>
+<!-- ROADMAP -->
+<div id="roadmap" class="roadmap">
+  <div class="roadmap-box">
+    <div class="phase">
+      <h3>Phase 1</h3>
+      <p>Token launch and community building.</p>
+    </div>
     <div class="line"></div>
-    <div class="node">Community</div>
+    <div class="phase">
+      <h3>Phase 2</h3>
+      <p>Digital platforms, AI exploration, and ecosystem planning.</p>
+    </div>
     <div class="line"></div>
-    <div class="node">Blockchain</div>
-    <div class="line"></div>
-    <div class="node">Future Utilities</div>
+    <div class="phase">
+      <h3>Phase 3</h3>
+      <p>Connecting real-world businesses with blockchain and long-term expansion.</p>
+    </div>
   </div>
 </div>
 
@@ -237,38 +242,30 @@ function typeText(text){
   function run(){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
-      timer=setTimeout(run,65);
+      timer=setTimeout(run,60);
     }
   }
   run();
 }
 
-typeText(
-  "Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain."
-);
+typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
 
 function showIntro(){
-  typeText(
-    "Ape Mood (APEM) is a community-driven next-generation digital asset focused on transparency, responsibility, and long-term growth."
-  );
-}
-
-function showProjects(){
-  const d=document.getElementById("diagram");
-  d.style.display="flex";
-  setTimeout(()=>{d.style.display="none"},3500);
+  typeText("Ape Mood (APEM) is a community-driven digital asset focused on long-term growth and transparency.");
 }
 
 function showSupply(){
-  typeText(
-    "The total supply of Ape Mood is fixed at 150 million tokens. No additional tokens can ever be minted. The smart contract does not include any minting or inflation mechanisms."
-  );
+  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No additional tokens can ever be minted.");
 }
 
 function showExpect(){
-  typeText(
-    "We encourage responsible participation, steady decisions, and a long-term holding mindset."
-  );
+  typeText("We encourage responsible participation and a long-term holding mindset.");
+}
+
+function showRoadmap(){
+  const r=document.getElementById("roadmap");
+  r.style.display="flex";
+  setTimeout(()=>{r.style.display="none"},4000);
 }
 
 function copyCA(){
