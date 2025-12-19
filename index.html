@@ -11,19 +11,19 @@ body{background:#000;color:#fff;overflow-x:hidden}
 
 /* HERO */
 .hero{
-  min-height:100svh;
-  padding:90px 20px 40px;
-  background:#000;
+  min-height:100vh;
+  padding:90px 20px;
   display:flex;
   justify-content:center;
   align-items:center;
+  background:radial-gradient(circle at top,#111,#000);
 }
 
-/* CONTENT */
+/* BOX */
 .box{
   width:min(900px,100%);
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.15);
   border-radius:20px;
   padding:28px;
   text-align:center;
@@ -33,12 +33,12 @@ body{background:#000;color:#fff;overflow-x:hidden}
 h1{
   color:#FFD700;
   letter-spacing:4px;
-  font-size:2.4rem;
-  text-shadow:0 0 30px rgba(255,215,0,.9);
+  font-size:2.6rem;
+  text-shadow:0 0 35px rgba(255,215,0,.9);
 }
 @media(min-width:768px){h1{font-size:3.4rem}}
 
-/* TYPE TEXT */
+/* TYPE */
 .type{
   margin:18px auto;
   max-width:760px;
@@ -47,234 +47,98 @@ h1{
   min-height:3.8em;
 }
 .cursor{
-  display:inline-block;
-  width:8px;
-  height:1.2em;
-  background:#FFD700;
-  margin-left:4px;
+  display:inline-block;width:8px;height:1.2em;
+  background:#FFD700;margin-left:4px;
   animation:blink .8s infinite;
 }
 @keyframes blink{50%{opacity:0}}
 
 /* BUTTONS */
-.btns{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
+.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}
 .btn{
-  padding:14px 28px;
-  border-radius:999px;
-  font-weight:800;
-  text-decoration:none;
-  color:#000;
-  background:linear-gradient(135deg,#FFD700,#FFB800);
+  padding:14px 28px;border-radius:999px;
+  font-weight:800;text-decoration:none;
+  color:#000;background:linear-gradient(135deg,#FFD700,#FFB800);
 }
 .small{
-  padding:8px 14px;
-  font-size:.85rem;
+  padding:8px 14px;font-size:.85rem;
   background:rgba(255,255,255,.12);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.25);
-  cursor:pointer;
-}
-
-/* BUY */
-.buy{
-  margin-top:12px;
-  color:#FFD700;
-  font-weight:800;
-  letter-spacing:1px;
+  color:#fff;border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;cursor:pointer;
 }
 
 /* CONTRACT */
 .contract{
-  margin-top:16px;
-  padding:12px;
+  margin-top:16px;padding:12px;
   background:rgba(0,0,0,.4);
   border:1px solid rgba(255,255,255,.2);
   border-radius:14px;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
 }
 .contract button{
-  background:#FFD700;
-  border:none;
-  border-radius:999px;
-  padding:6px 12px;
-  font-weight:800;
-  cursor:pointer;
+  background:#FFD700;border:none;border-radius:999px;
+  padding:6px 14px;font-weight:700;cursor:pointer;
 }
 
-/* ROADMAP OVERLAY */
+/* ===== SCI-FI ROADMAP ===== */
 .roadmap{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.9);
   display:none;
   justify-content:center;
   align-items:center;
+  background:radial-gradient(circle,#020202,#000);
   z-index:9999;
+  overflow:hidden;
+}
+
+/* hacker grid scan */
+.roadmap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,215,0,.08) 0px,
+      rgba(255,215,0,.08) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+  animation:scan 1.2s linear infinite;
+}
+@keyframes scan{
+  from{background-position:0 0}
+  to{background-position:0 40px}
 }
 
 .roadmap-box{
+  position:relative;
   border:2px solid #FFD700;
   border-radius:20px;
-  padding:30px;
-  width:min(700px,90%);
-  background:linear-gradient(180deg,#050505,#000);
-  box-shadow:0 0 60px rgba(255,215,0,.6);
+  padding:34px 28px;
+  width:min(720px,92%);
+  background:rgba(5,5,5,.9);
+  box-shadow:0 0 70px rgba(255,215,0,.7);
   animation:zoomIn .5s ease;
 }
-
 @keyframes zoomIn{
-  from{transform:scale(.8);opacity:0}
+  from{transform:scale(.85);opacity:0}
   to{transform:scale(1);opacity:1}
 }
 
+/* PHASE */
 .phase{
-  margin:16px 0;
-  padding:14px 18px;
-  border:1px solid rgba(255,215,0,.7);
-  border-radius:14px;
-  position:relative;
-  animation:pulseGlow 2.5s infinite;
+  margin:18px 0;
+  padding:16px 18px;
+  border:1px solid rgba(255,215,0,.6);
+  border-radius:16px;
+  text-align:left;
+  animation:neonPulse 2.6s infinite;
 }
-
-@keyframes pulseGlow{
-  50%{box-shadow:0 0 25px rgba(255,215,0,.8)}
+@keyframes neonPulse{
+  50%{box-shadow:0 0 28px rgba(255,215,0,.85)}
 }
 
 .phase h3{
-  color:#FFD700;
-  margin-bottom:6px;
-}
-
-.line{
-  width:2px;
-  height:20px;
-  background:#FFD700;
-  margin:10px auto;
-}
-
-/* INFO */
-section{
-  padding:80px 20px;
-  background:#050505;
-  text-align:center;
-}
-.info{max-width:900px;margin:auto;opacity:.9;line-height:1.8}
-</style>
-</head>
-
-<body>
-
-<div class="hero">
-  <div class="box">
-    <h1>APE MOOD</h1>
-
-    <div class="type">
-      <span id="typed"></span><span class="cursor"></span>
-    </div>
-
-    <div class="btns">
-      <a class="btn" href="#">Swap APEM</a>
-      <a class="btn" href="#">Whitepaper</a>
-    </div>
-
-    <div class="btns">
-      <button class="small" onclick="showIntro()">Token Intro</button>
-      <button class="small" onclick="showRoadmap()">Road Map</button>
-      <button class="small" onclick="showSupply()">Supply Details</button>
-      <button class="small" onclick="showExpect()">Our Expectations</button>
-    </div>
-
-    <div class="buy">BUY AND HOLD</div>
-
-    <div class="contract">
-      <code id="ca">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</code>
-      <button onclick="copyCA()">Copy</button>
-      <span id="copyMsg"></span>
-    </div>
-  </div>
-</div>
-
-<section>
-  <div class="info">
-    <p><b>Token:</b> Ape Mood (APEM)</p>
-    <p><b>Chain:</b> BNB Smart Chain</p>
-    <p><b>Total Supply:</b> 150,000,000</p>
-  </div>
-</section>
-
-<!-- ROADMAP -->
-<div id="roadmap" class="roadmap">
-  <div class="roadmap-box">
-    <div class="phase">
-      <h3>Phase 1</h3>
-      <p>Token launch and community building.</p>
-    </div>
-    <div class="line"></div>
-    <div class="phase">
-      <h3>Phase 2</h3>
-      <p>Digital platforms, AI exploration, and ecosystem planning.</p>
-    </div>
-    <div class="line"></div>
-    <div class="phase">
-      <h3>Phase 3</h3>
-      <p>Connecting real-world businesses with blockchain and long-term expansion.</p>
-    </div>
-  </div>
-</div>
-
-<script>
-const typed=document.getElementById("typed");
-let timer;
-
-function typeText(text){
-  clearTimeout(timer);
-  typed.textContent="";
-  let i=0;
-  function run(){
-    if(i<=text.length){
-      typed.textContent=text.slice(0,i++);
-      timer=setTimeout(run,60);
-    }
-  }
-  run();
-}
-
-typeText("Ape Mood (APEM) is a community-driven, next-generation digital asset built on BNB Smart Chain.");
-
-function showIntro(){
-  typeText("Ape Mood (APEM) is a community-driven digital asset focused on long-term growth and transparency.");
-}
-
-function showSupply(){
-  typeText("The total supply of Ape Mood is fixed at 150 million tokens. No additional tokens can ever be minted.");
-}
-
-function showExpect(){
-  typeText("We encourage responsible participation and a long-term holding mindset.");
-}
-
-function showRoadmap(){
-  const r=document.getElementById("roadmap");
-  r.style.display="flex";
-  setTimeout(()=>{r.style.display="none"},4000);
-}
-
-function copyCA(){
-  navigator.clipboard.writeText(document.getElementById("ca").innerText);
-  const m=document.getElementById("copyMsg");
-  m.innerText="Copied";
-  setTimeout(()=>m.innerText="",1200);
-}
-</script>
-
-</body>
-</html>
+  color:#FFD700
