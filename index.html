@@ -190,7 +190,6 @@ let drops=Array(cols).fill(0);
   requestAnimationFrame(draw);
 })();
 
-// REAL KEYBOARD TYPING SOUND
 function hackType(){
   const bufferSize = audio.sampleRate * 0.02;
   const buffer = audio.createBuffer(1, bufferSize, audio.sampleRate);
