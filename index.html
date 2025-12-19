@@ -26,7 +26,7 @@ canvas{position:fixed;inset:0;z-index:-2}
   padding:80px 20px;
 }
 
-/* MAIN BOX */
+/* BOX */
 .box{
   width:min(900px,100%);
   background:rgba(0,0,0,.65);
@@ -47,11 +47,7 @@ h1{
 @keyframes flicker{36%{opacity:.85}}
 
 /* TYPING */
-.type{
-  margin:18px auto;
-  min-height:3.6em;
-  max-width:780px;
-}
+.type{margin:18px auto;min-height:3.6em;max-width:780px}
 .cursor{
   display:inline-block;
   width:8px;height:1.2em;
@@ -62,13 +58,7 @@ h1{
 @keyframes blink{50%{opacity:0}}
 
 /* BUTTONS */
-.btns{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
+.btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
 .btn,.small{
   padding:12px 26px;
   border:1px solid #00ffd0;
@@ -76,18 +66,7 @@ h1{
   color:#00ffd0;
   border-radius:6px;
   cursor:pointer;
-  position:relative;
-  overflow:hidden;
 }
-.btn::after,.small::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,transparent,rgba(0,255,200,.3),transparent);
-  transform:translateX(-100%);
-  animation:scan 3s infinite;
-}
-@keyframes scan{to{transform:translateX(100%)}}
 
 /* CONTRACT */
 .contract{
@@ -118,33 +97,13 @@ h1{
   padding:26px;
   box-shadow:0 0 90px rgba(0,255,200,.8);
 }
-.portal-text{
-  white-space:pre-line;
-  margin-top:16px;
-}
+.portal-text{white-space:pre-line;margin-top:16px}
 
 /* DIAGRAMS */
-.diagram{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-}
-.node{
-  width:60px;height:60px;
-  border:2px solid #00ffd0;
-  border-radius:50%;
-  animation:spin 4s linear infinite;
-}
-.bar{
-  width:26px;height:80px;
-  border:2px solid #00ffd0;
-  animation:grow 2s infinite alternate;
-}
-.wave{
-  width:100px;height:40px;
-  border-bottom:2px solid #00ffd0;
-  animation:wave 1.5s infinite alternate;
-}
+.diagram{display:flex;justify-content:center;gap:12px}
+.node{width:60px;height:60px;border:2px solid #00ffd0;border-radius:50%;animation:spin 4s linear infinite}
+.bar{width:26px;height:80px;border:2px solid #00ffd0;animation:grow 2s infinite alternate}
+.wave{width:100px;height:40px;border-bottom:2px solid #00ffd0;animation:wave 1.5s infinite alternate}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes grow{to{height:120px}}
 @keyframes wave{to{transform:translateY(10px)}}
@@ -183,7 +142,6 @@ h1{
   </div>
 </div>
 
-<!-- PORTAL -->
 <div id="portal" class="portal">
   <div class="portal-box">
     <div id="diagram"></div>
@@ -192,21 +150,15 @@ h1{
 </div>
 
 <script>
-/* MATRIX BACKGROUND */
+/* MATRIX */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
-function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-}
-resize();
-addEventListener("resize",resize);
-
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();addEventListener("resize",resize);
 const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%";
 const size=14;
 let cols=Math.floor(canvas.width/size);
 let drops=Array(cols).fill(0);
-
 (function draw(){
   ctx.fillStyle="rgba(0,0,0,.08)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -220,24 +172,17 @@ let drops=Array(cols).fill(0);
   requestAnimationFrame(draw);
 })();
 
-/* REAL KEYBOARD TYPING SOUND (MP3) */
-const typingAudio = new Audio("typing.mp3");
-typingAudio.volume = 0.35;
-typingAudio.preload = "auto";
+/* ====== TYPING SOUND (REAL, SYNCED) ====== */
+const TYPE_SPEED = 45; // ms (text + sound sync)
+const baseTypingAudio = new Audio("assets/typing.mp3");
+baseTypingAudio.volume = 0.35;
+baseTypingAudio.preload = "auto";
 
 function playType(){
-  try{
-    typingAudio.currentTime = 0;
-    typingAudio.play();
-
-    // force stop sound quickly (key press feel)
-    setTimeout(()=>{
-      typingAudio.pause();
-      typingAudio.currentTime = 0;
-    },45); // 35–55 ms is ideal
-  }catch(e){}
+  const a = baseTypingAudio.cloneNode();
+  a.currentTime = 0;
+  a.play();
 }
-
 
 /* MAIN TYPING */
 const typed=document.getElementById("typed");
@@ -248,13 +193,13 @@ function typeMain(text){
     if(i<=text.length){
       typed.textContent=text.slice(0,i++);
       playType();
-      setTimeout(run,45);
+      setTimeout(run, TYPE_SPEED);
     }
   })();
 }
 typeMain(":: Initializing Ape Mood Protocol...");
 
-/* PORTAL LOGIC */
+/* PORTAL */
 const portal=document.getElementById("portal");
 const portalText=document.getElementById("portalText");
 const diagram=document.getElementById("diagram");
@@ -287,7 +232,7 @@ function openPortal(key){
     if(i<=txt.length){
       portalText.textContent=txt.slice(0,i++);
       playType();
-      setTimeout(run,35);
+      setTimeout(run, TYPE_SPEED);
     }
   })();
 
