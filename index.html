@@ -745,20 +745,12 @@
        SOFT TYPING SOUND (NO BEEP)
        =============================== */
     let audioCtx = null;
-    let soundEnabled = false; // ✅ no toggle; enabled automatically on first touch/keypress
-
     function ensureAudio(){
       if(!audioCtx){
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
-      // try resume (some browsers start suspended)
-      if(audioCtx.state === "suspended"){
-        audioCtx.resume().catch(()=>{});
-      }
     }
-
     function typeClick(){
-      if(!soundEnabled) return; // ✅ sound only after first interaction
       // very soft "key" noise (short filtered noise burst)
       try{
         ensureAudio();
@@ -790,7 +782,7 @@
     }
 
     /* ===============================
-       TYPEWRITER (with proper cancel)
+       TYPEWRITER
        =============================== */
     function typeInto(el, text, opts={}){
       const {
@@ -806,13 +798,7 @@
       if(cursor) el.appendChild(caret);
 
       let i = 0;
-      let cancelled = false;
-
       const timer = setInterval(()=>{
-        if(cancelled){
-          clearInterval(timer);
-          return;
-        }
         if(i >= text.length){
           clearInterval(timer);
           if(caret && cursor) caret.style.opacity = "0";
@@ -828,28 +814,20 @@
         }
         if(sound && ch.trim().length) typeClick();
       }, speed);
-
-      // ✅ stop function
-      return ()=>{
-        cancelled = true;
-        clearInterval(timer);
-      };
+      return ()=>clearInterval(timer);
     }
 
     /* ===============================
-       HERO TYPING (start after first interaction)
+       HERO TYPING (PDF content idea)
        =============================== */
     const heroTyped = document.getElementById("heroTyped");
     const buyHold = document.getElementById("buyHold");
 
+    // Start typing after first user interaction for iOS audio policy
     let started = false;
     function startHeroTyping(){
       if(started) return;
       started = true;
-
-      // ✅ enable sound automatically on first touch/keypress
-      soundEnabled = true;
-      ensureAudio();
 
       typeInto(buyHold, "BUY AND HOLD", {speed:22, sound:true, cursor:false});
 
@@ -879,6 +857,9 @@
 
     /* ===============================
        BUTTON BEHAVIOR
+       Swap: scroll to swap section
+       Roadmap: open portal overlay (scrollable)
+       Others: auto scroll down, show info portal with typing, then auto close + back to top
        =============================== */
 
     const portalLayer = document.getElementById("portalLayer");
@@ -887,29 +868,12 @@
     const portalClose = document.getElementById("portalClose");
 
     let stopTyping = null;
-
-    // ✅ NEW: timers to prevent "ghost typing" after manual close
-    let portalOpenTimer = null;
-    let portalAutoCloseTimer = null;
-    let portalReturnTopTimer = null;
-
-    function clearPortalTimers(){
-      if(portalOpenTimer){ clearTimeout(portalOpenTimer); portalOpenTimer = null; }
-      if(portalAutoCloseTimer){ clearTimeout(portalAutoCloseTimer); portalAutoCloseTimer = null; }
-      if(portalReturnTopTimer){ clearTimeout(portalReturnTopTimer); portalReturnTopTimer = null; }
-    }
-
     function closePortal(){
-      // ✅ stop everything immediately (typing + sound events)
-      clearPortalTimers();
-
       portalLayer.classList.remove("show");
       portalLayer.setAttribute("aria-hidden","true");
       portalText.textContent = "";
-
       if(stopTyping) { stopTyping(); stopTyping = null; }
     }
-
     portalClose.addEventListener("click", closePortal);
     portalLayer.addEventListener("click", (e)=>{
       if(e.target === portalLayer) closePortal();
@@ -919,11 +883,8 @@
       // scroll down to details first (auto move screen)
       document.getElementById("details").scrollIntoView({behavior:"smooth", block:"start"});
 
-      // ✅ if user spams buttons, close previous cleanly
-      closePortal();
-
       // open portal a bit after scroll starts
-      portalOpenTimer = setTimeout(()=>{
+      setTimeout(()=>{
         portalTitle.textContent = title;
         portalLayer.classList.add("show");
         portalLayer.setAttribute("aria-hidden","false");
@@ -934,11 +895,11 @@
           sound: true,
           cursor: true,
           onDone: ()=>{
-            // ✅ auto-close after 10 seconds (as requested)
-            portalAutoCloseTimer = setTimeout(()=>{
+            // after typing finished, disappear + go back to top automatically
+            setTimeout(()=>{
               closePortal();
               document.getElementById("top").scrollIntoView({behavior:"smooth", block:"start"});
-            }, 10000);
+            }, 900);
           }
         });
       }, 420);
@@ -999,7 +960,6 @@ All future features and business integrations depend on project success, market 
     // Roadmap portal (no typing, scrollable)
     const roadOverlay = document.getElementById("roadOverlay");
     document.getElementById("btnRoadmap").addEventListener("click", ()=>{
-      closePortal(); // ✅ keep clean
       roadOverlay.classList.add("show");
       roadOverlay.setAttribute("aria-hidden","false");
       document.body.style.overflow="hidden"; // prevent background scrolling
