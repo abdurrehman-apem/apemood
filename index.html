@@ -881,7 +881,6 @@ All future features and business integrations depend on project success, market 
        ========================= */
     let soundEnabled = false;
     let audioCtx = null;
-    let typingCancelled = false; 
 
     const soundToggle = document.getElementById('soundToggle');
     const soundDot = document.getElementById('soundDot');
@@ -944,7 +943,6 @@ All future features and business integrations depend on project success, market 
       el.textContent = "";
       let lastClickAt = 0;
       for(let i=0;i<text.length;i++){
-        if (typingCancelled) break;
         el.textContent += text[i];
         const now = performance.now();
         if(now - lastClickAt > (1000/maxClicksPerSec) && text[i] !== " "){
@@ -984,22 +982,44 @@ All future features and business integrations depend on project success, market 
       }
     });
 
+<script>
 /* =========================
-   INFO PORTAL — FULL FIXED BLOCK
+   PORTAL + TYPING (FIXED)
    ========================= */
 
-const infoPortal  = document.getElementById('infoPortal');
-const portalTitle = document.getElementById('portalTitle');
-const portalText  = document.getElementById('portalText');
-const portalClose = document.getElementById('portalClose');
+const infoPortal   = document.getElementById('infoPortal');
+const portalTitle  = document.getElementById('portalTitle');
+const portalText   = document.getElementById('portalText');
+const portalClose  = document.getElementById('portalClose');
 
 let portalRunning = false;
-let typingCancelled = false;
 let portalAutoCloseTimer = null;
+let typingCancelled = false;
+
+/* ---------- SAFE TYPING ---------- */
+async function typeInto(el, text, {speed=16, maxClicksPerSec=22} = {}) {
+  el.textContent = "";
+  typingCancelled = false;
+
+  let lastClickAt = 0;
+
+  for (let i = 0; i < text.length; i++) {
+    if (typingCancelled) return;
+
+    el.textContent += text[i];
+
+    const now = performance.now();
+    if (soundEnabled && text[i] !== " " && now - lastClickAt > (1000 / maxClicksPerSec)) {
+      keyClick();
+      lastClickAt = now;
+    }
+
+    await new Promise(r => setTimeout(r, speed));
+  }
+}
 
 /* ---------- CLOSE PORTAL ---------- */
-function closePortal({scrollBack = true} = {}) {
-  // stop typing + sound instantly
+function closePortal({ scrollBack = true } = {}) {
   typingCancelled = true;
   portalRunning = false;
 
@@ -1011,96 +1031,61 @@ function closePortal({scrollBack = true} = {}) {
   infoPortal.classList.remove('show');
 
   if (scrollBack) {
-    document
-      .getElementById('hero')
+    document.getElementById('hero')
       .scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
-/* ---------- TYPING FUNCTION ---------- */
-async function typeInto(el, text, { speed = 14, maxClicksPerSec = 22 } = {}) {
-  el.textContent = "";
-  typingCancelled = false;
-
-  let lastClickAt = 0;
-
-  for (let i = 0; i < text.length; i++) {
-    if (typingCancelled) break;
-
-    el.textContent += text[i];
-
-    const now = performance.now();
-    if (
-      soundEnabled &&
-      text[i] !== " " &&
-      now - lastClickAt > 1000 / maxClicksPerSec
-    ) {
-      keyClick();
-      lastClickAt = now;
-    }
-
-    await new Promise(r => setTimeout(r, speed));
-  }
-}
+/* X button */
+portalClose.addEventListener('click', () => {
+  closePortal({ scrollBack: true });
+});
 
 /* ---------- OPEN PORTAL ---------- */
 async function openPortal(title, content) {
-  // reset everything
-  typingCancelled = false;
-  portalRunning = true;
+  // hard reset
+  typingCancelled = true;
+  await new Promise(r => setTimeout(r, 20));
 
-  if (portalAutoCloseTimer) {
-    clearTimeout(portalAutoCloseTimer);
-    portalAutoCloseTimer = null;
-  }
+  portalRunning = true;
+  typingCancelled = false;
 
   portalTitle.textContent = title;
   portalText.textContent = "";
-
   infoPortal.classList.add('show');
 
-  // scroll to portal
   setTimeout(() => {
     infoPortal.scrollIntoView({ behavior: "smooth", block: "start" });
   }, 60);
 
-  // start typing
   await typeInto(portalText, content);
 
-  // auto close after 10 seconds
   portalAutoCloseTimer = setTimeout(() => {
     closePortal({ scrollBack: true });
   }, 10000);
 }
 
-/* ---------- CLOSE BUTTON ---------- */
-portalClose.addEventListener('click', () => {
-  closePortal({ scrollBack: true });
-});
+/* ---------- BUTTON HOOKS ---------- */
+document.getElementById('btnTokenomics')
+  .addEventListener('click', () => openPortal("Tokenomics", CONTENT.tokenomics));
 
+document.getElementById('btnEthics')
+  .addEventListener('click', () => openPortal("Ethical & Islamic Principles", CONTENT.ethics));
 
-    /* Buttons */
-    document.getElementById('btnTokenomics').addEventListener('click', ()=>{
-      openPortal("Tokenomics", CONTENT.tokenomics);
-    });
-    document.getElementById('btnEthics').addEventListener('click', ()=>{
-      openPortal("Ethical & Islamic Principles", CONTENT.ethics);
-    });
-    document.getElementById('btnSecurity').addEventListener('click', ()=>{
-      openPortal("Security & Transparency", CONTENT.security);
-    });
-    document.getElementById('btnDisclaimer').addEventListener('click', ()=>{
-      openPortal("Disclaimer", CONTENT.disclaimer);
-    });
+document.getElementById('btnSecurity')
+  .addEventListener('click', () => openPortal("Security & Transparency", CONTENT.security));
 
-    document.getElementById('btnSwap').addEventListener('click', ()=>{
-      openPortal("Swap", CONTENT.swap);
-    });
+document.getElementById('btnDisclaimer')
+  .addEventListener('click', () => openPortal("Disclaimer", CONTENT.disclaimer));
 
-    /* ✅ CHANGE 2: Whitepaper button opens file */
-    document.getElementById('btnWhitepaper').addEventListener('click', ()=>{
-      window.open('whitepaper.pdf', '_blank');
-    });
+document.getElementById('btnSwap')
+  .addEventListener('click', () => openPortal("Swap", CONTENT.swap));
+
+/* ---------- WHITEPAPER ---------- */
+document.getElementById('btnWhitepaper')
+  .addEventListener('click', () => window.open('whitepaper.pdf', '_blank'));
+</script>
+
 
     /* =========================
        Roadmap portal
