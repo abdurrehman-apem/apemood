@@ -881,6 +881,7 @@ All future features and business integrations depend on project success, market 
        ========================= */
     let soundEnabled = false;
     let audioCtx = null;
+    let typingCancelled = false; 
 
     const soundToggle = document.getElementById('soundToggle');
     const soundDot = document.getElementById('soundDot');
@@ -943,6 +944,7 @@ All future features and business integrations depend on project success, market 
       el.textContent = "";
       let lastClickAt = 0;
       for(let i=0;i<text.length;i++){
+        if (typingCancelled) return;
         el.textContent += text[i];
         const now = performance.now();
         if(now - lastClickAt > (1000/maxClicksPerSec) && text[i] !== " "){
@@ -994,6 +996,7 @@ All future features and business integrations depend on project success, market 
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
+      typingCancelled = true;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
       infoPortal.classList.remove('show');
       portalRunning = false;
