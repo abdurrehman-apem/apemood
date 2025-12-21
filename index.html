@@ -720,6 +720,97 @@
   animation-duration:2s;
 }
 
+
+/* ===== FIRST CLASS SCI‑FI UPGRADE ===== */
+
+/* Background glow aura */
+.wrap::before{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  background:
+    radial-gradient(60% 40% at 50% 20%, rgba(124,77,255,.12), transparent 60%),
+    radial-gradient(40% 30% at 80% 60%, rgba(36,209,255,.10), transparent 60%),
+    radial-gradient(50% 35% at 20% 70%, rgba(255,204,77,.10), transparent 65%);
+  filter: blur(40px);
+  z-index:-1;
+  animation: auraMove 12s ease-in-out infinite;
+}
+@keyframes auraMove{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-40px)}
+}
+
+/* Ultra premium buttons */
+.btn{
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.btn:hover{
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* Swap button elite mode */
+#btnSwap{
+  border:2px solid rgba(255,204,77,.9);
+  text-shadow:0 0 12px rgba(255,204,77,.6);
+}
+#btnSwap::before{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:18px;
+  background: linear-gradient(120deg,
+    rgba(255,204,77,.0),
+    rgba(255,204,77,.6),
+    rgba(124,77,255,.5),
+    rgba(36,209,255,.5),
+    rgba(255,204,77,.0)
+  );
+  filter: blur(18px);
+  opacity:.7;
+  z-index:-1;
+}
+
+/* Roadmap hologram effect */
+.roadOverlay::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(124,77,255,.08) 0px,
+      rgba(124,77,255,.08) 1px,
+      transparent 6px,
+      transparent 14px
+    );
+  mix-blend-mode: screen;
+  pointer-events:none;
+  animation: holoScan 2.6s linear infinite;
+}
+@keyframes holoScan{
+  from{transform:translateY(-20px)}
+  to{transform:translateY(20px)}
+}
+
+/* Roadmap card depth */
+.roadCard{
+  transform-style: preserve-3d;
+}
+.roadCard:hover{
+  transform: perspective(900px) rotateX(6deg);
+}
+
+/* Logo prestige pulse */
+.logoCore{
+  animation: prestige 4s ease-in-out infinite;
+}
+@keyframes prestige{
+  0%,100%{filter: drop-shadow(0 0 18px rgba(255,204,77,.35))}
+  50%{filter: drop-shadow(0 0 38px rgba(124,77,255,.55))}
+}
+
 </style>
 </head>
 
@@ -1129,3 +1220,4 @@ All future features and business integrations depend on project success, market 
   </script>
 </body>
 </html>
+
