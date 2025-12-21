@@ -310,6 +310,22 @@
     /* Buttons */
     .btnRow{
       display:flex;
+    .btnPrimaryRow{
+      justify-content:center;
+      margin-top:10px;
+    }
+    .btnSecondaryRow{
+      justify-content:center;
+      margin-top:14px;
+    }
+    @media (max-width:768px){
+      .btnSecondaryRow{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+      }
+    }
+
       gap:10px;
       flex-wrap:wrap;
       justify-content:center;
@@ -1596,16 +1612,18 @@ body.roadmap-open{
         </div>
       </div>
 
-      <div class="btnRow">
+      <!-- PRIMARY CTA -->
+      <div class="btnRow btnPrimaryRow">
         <button class="btn primary" id="btnSwap">Swap</button>
+      </div>
+
+      <!-- SECONDARY ACTIONS -->
+      <div class="btnRow btnSecondaryRow">
         <button class="btn" id="btnTokenomics">Tokenomics</button>
         <button class="btn" id="btnEthics">Ethics</button>
         <button class="btn" id="btnSecurity">Security</button>
         <button class="btn" id="btnDisclaimer">Disclaimer</button>
-
-        <!-- NEW: Whitepaper button (requested) -->
         <button class="btn" id="btnWhitepaper">Whitepaper</button>
-
         <button class="btn primary" id="btnRoadmap">Roadmap</button>
       </div>
 
@@ -1886,7 +1904,7 @@ const infoPortal = document.getElementById('infoPortal');
       resetUI();
       portalRunning = false;
       if(scrollBack){
-        document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
+        document.getElementById('btnSwap').scrollIntoView({behavior:"smooth", block:"center"});
       }
     }
 
