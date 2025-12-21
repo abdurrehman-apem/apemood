@@ -484,7 +484,9 @@
     .portalTitle h3{
       margin:0;
       font-size:18px;
-      letter-spacing:.2px;
+      letter-spacing:.4px;
+      color: rgba(255,204,77,.95);
+      text-shadow:0 0 18px rgba(255,204,77,.45);
     }
     .portalClose{
       border:1px solid rgba(255,220,120,.22);
@@ -496,7 +498,7 @@
       cursor:pointer;
     }
     .portalText{
-      color: var(--muted);
+      color: rgba(36,209,255,.95);
       line-height: 1.7;
       font-size: 14px;
       white-space: pre-wrap;
@@ -1434,6 +1436,17 @@ header::after{
   transition:all .4s ease;
 }
 
+
+/* ===== PORTAL FOCUS MODE ===== */
+body.portal-open .universe,
+body.portal-open .scan,
+body.portal-open .roadOverlay{
+  display:none !important;
+}
+body.portal-open{
+  background:#05060a;
+}
+
 </style>
 </head>
 
@@ -1782,7 +1795,7 @@ All future features and business integrations depend on project success, market 
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
-      infoPortal.classList.remove('show');
+      infoPortal.classList.remove('show'); document.body.classList.remove('portal-open');
       portalRunning = false;
       if(scrollBack){
         document.getElementById('hero').scrollIntoView({behavior:"smooth", block:"start"});
@@ -1797,7 +1810,7 @@ All future features and business integrations depend on project success, market 
 
       portalTitle.textContent = title;
       portalText.textContent = "";
-      infoPortal.classList.add('show');
+      infoPortal.classList.add('show'); document.body.classList.add('portal-open');
 
       // auto scroll down to portal
       setTimeout(()=>{
@@ -1808,8 +1821,7 @@ All future features and business integrations depend on project success, market 
       await typeInto(portalText, content, {speed:14, maxClicksPerSec:22}, portalCancel);
 
       // ✅ CHANGE 1: after typing ends -> auto close after 10 seconds (requested)
-      portalAutoCloseTimer = setTimeout(()=>{
-        closePortal({scrollBack:true});
+      
       }, 10000);
     }
 
