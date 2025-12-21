@@ -677,7 +677,50 @@
       45%{ transform: translate(-50%,-58%) scale(1.25); opacity:.95; }
       100%{ transform: translate(-50%,-85%) scale(2.9); opacity:0; }
     }
-  </style>
+  
+/* === ENHANCEMENTS === */
+/* Bigger SWAP button */
+#btnSwap{
+  padding: 18px 26px !important;
+  font-size: 18px !important;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 40px rgba(255,204,77,.35);
+  animation: pulseSwap 2.4s ease-in-out infinite;
+}
+@keyframes pulseSwap{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.06)}
+}
+
+/* Animated buttons */
+.btn{
+  position:relative;
+  overflow:hidden;
+}
+.btn::after{
+  content:"";
+  position:absolute; inset:-2px;
+  background: linear-gradient(120deg, transparent, rgba(255,204,77,.35), transparent);
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+}
+.btn:hover::after{ transform: translateX(120%); }
+.btn:hover{ box-shadow:0 0 28px rgba(255,204,77,.25); }
+
+/* Roadmap sci‑fi animation */
+.roadOverlay .roadCard{
+  animation: floatCard 6s ease-in-out infinite;
+}
+@keyframes floatCard{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.roadOverlay .roadScan{
+  opacity:.22;
+  animation-duration:2s;
+}
+
+</style>
 </head>
 
 <body>
