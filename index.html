@@ -469,6 +469,11 @@
       opacity:.95;
     }
     .portalInner{
+  min-height:60vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
       position:relative;
       z-index:2;
       padding:16px;
@@ -1449,6 +1454,30 @@ header::after{
       visibility:hidden !important;
     }
 
+
+/* === ROADMAP BACKGROUND ISOLATION FIX === */
+body:not(.road-open) .roadBG,
+body:not(.road-open) .roadScan{
+  display:none !important;
+}
+
+
+/* === GOLDEN PORTAL TEXT === */
+.portalText{
+  background: linear-gradient(90deg, #ffcc4d, #ffd978, #ffb100, #ffcc4d);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: goldFlow 6s ease infinite;
+  text-shadow: 0 0 22px rgba(255,204,77,.35);
+}
+@keyframes goldFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
 </style>
 </head>
 
@@ -1857,7 +1886,7 @@ All future features and business integrations depend on project success, market 
 
     btnRoadmap.addEventListener('click', ()=>{
       closePortal({scrollBack:false});
-      roadOverlay.classList.add('show');
+      roadOverlay.classList.add('show'); document.body.classList.add('road-open');
   setTimeout(()=>warp.classList.remove('show'), 1800);
       roadOverlay.setAttribute('aria-hidden','false');
       document.body.style.overflow="hidden";
@@ -1865,6 +1894,10 @@ All future features and business integrations depend on project success, market 
     });
 
     btnBack.addEventListener('click', ()=>{
+  roadOverlay.classList.remove('show');
+  document.body.style.overflow="";
+  document.body.classList.remove('road-open');
+
       roadOverlay.classList.remove('show');
       roadOverlay.setAttribute('aria-hidden','true');
       document.body.style.overflow="";
