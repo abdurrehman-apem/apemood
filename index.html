@@ -1777,6 +1777,17 @@ All future features and business integrations depend on project success, market 
     /* =========================
        Info Portal behavior
        ========================= */
+
+// ===== FINAL POLISH SAFE HOOKS =====
+function portalFocusOn(){
+  const w = document.querySelector('.wrap');
+  if(w) w.classList.add('portal-focus');
+}
+function portalFocusOff(){
+  const w = document.querySelector('.wrap');
+  if(w) w.classList.remove('portal-focus');
+}
+
     const infoPortal = document.getElementById('infoPortal');
     const portalTitle = document.getElementById('portalTitle');
     const portalText  = document.getElementById('portalText');
@@ -1786,6 +1797,8 @@ All future features and business integrations depend on project success, market 
     let portalAutoCloseTimer = null;
 
     function closePortal({scrollBack=true} = {}){
+  portalFocusOff();
+  hideWarp && hideWarp();
       // cancel any ongoing portal typing so sound/typing stops immediately
       portalCancel.id++;
       if(portalAutoCloseTimer) clearTimeout(portalAutoCloseTimer);
@@ -1822,6 +1835,7 @@ All future features and business integrations depend on project success, market 
   };
 
 async function openPortal(title, content){
+  portalFocusOn();
       if(portalRunning) return;
       portalRunning = true;
 
