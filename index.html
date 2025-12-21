@@ -1266,6 +1266,150 @@ header::after{
   100%{transform:translateX(120%)}
 }
 
+
+/* =========================================================
+   NEXT LEVEL: HYPER-JUMP + HUD STATUS + PORTAL SCANNER
+   (visual only; IDs/text/functions unchanged)
+   ========================================================= */
+
+.fxStatus{
+  position:fixed;
+  right:18px;
+  top:18px;
+  z-index:7;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:12px 12px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.36);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    0 0 60px rgba(36,209,255,.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing:.4px;
+  opacity:.92;
+}
+@media (max-width:720px){
+  .fxStatus{ right:10px; top:10px; transform:scale(.92); transform-origin: top right; }
+}
+.fxStatusRow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  white-space:nowrap;
+}
+.fxLed{
+  width:10px;height:10px;border-radius:50%;
+  background: rgba(255,204,77,.85);
+  box-shadow:0 0 18px rgba(255,204,77,.55);
+}
+.fxLed.cyan{ background: rgba(36,209,255,.9); box-shadow:0 0 18px rgba(36,209,255,.55); }
+.fxLed.vio{ background: rgba(124,77,255,.9); box-shadow:0 0 18px rgba(124,77,255,.55); }
+.fxLabel{ color: rgba(255,255,255,.70); font-size:11px; }
+.fxValue{ color: rgba(255,255,255,.92); font-size:12px; font-weight:800; }
+
+.fxWarp{
+  position:fixed; inset:0;
+  z-index:80;
+  display:none;
+  pointer-events:none;
+  background: radial-gradient(circle at 50% 40%, rgba(36,209,255,.08), rgba(0,0,0,.82) 65%, rgba(0,0,0,.95));
+}
+.fxWarp.show{ display:block; animation: warpFadeIn .12s linear; }
+@keyframes warpFadeIn{ from{opacity:0} to{opacity:1} }
+
+.fxWarpRing{
+  position:absolute;
+  left:50%; top:50%;
+  width: 260px; height:260px;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(36,209,255,.35);
+  box-shadow:
+    0 0 60px rgba(36,209,255,.25),
+    inset 0 0 40px rgba(124,77,255,.18);
+  animation: ringSpin 0.9s linear infinite;
+}
+.fxWarpRing.r2{
+  width: 460px; height:460px;
+  border-color: rgba(255,204,77,.25);
+  box-shadow: 0 0 90px rgba(255,204,77,.18), inset 0 0 50px rgba(255,204,77,.08);
+  animation-duration: 1.25s;
+  animation-direction: reverse;
+}
+.fxWarpRing.r3{
+  width: 700px; height:700px;
+  border-color: rgba(124,77,255,.22);
+  box-shadow: 0 0 120px rgba(124,77,255,.18), inset 0 0 60px rgba(36,209,255,.10);
+  animation-duration: 1.6s;
+}
+@keyframes ringSpin{ to{ transform:translate(-50%,-50%) rotate(360deg);} }
+
+.fxWarpFlash{
+  position:absolute; inset:0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.32), transparent 55%);
+  opacity:0;
+}
+.fxWarp.show .fxWarpFlash{ animation: warpFlash .55s ease-out forwards; }
+@keyframes warpFlash{
+  0%{opacity:0; transform:scale(.98)}
+  30%{opacity:.75; transform:scale(1.03)}
+  100%{opacity:0; transform:scale(1.12)}
+}
+.fxWarpText{
+  position:absolute;
+  left:50%; top:50%;
+  transform:translate(-50%, calc(-50% + 170px));
+  font-weight:1000;
+  letter-spacing:4px;
+  font-size:12px;
+  color: rgba(255,255,255,.85);
+  text-shadow: 0 0 24px rgba(36,209,255,.35);
+  opacity:.85;
+}
+
+.infoPortal{
+  overflow:hidden;
+}
+.infoPortal::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(36,209,255,.08) 0px,
+      rgba(36,209,255,.08) 1px,
+      transparent 6px,
+      transparent 14px
+    );
+  opacity:.0;
+  pointer-events:none;
+  mix-blend-mode: screen;
+}
+.infoPortal.show::before{
+  opacity:.22;
+  animation: portalScan 1.9s linear infinite;
+}
+@keyframes portalScan{
+  from{transform:translateY(-18px)}
+  to{transform:translateY(18px)}
+}
+
+.roadCard{ position:relative; }
+#roadGalaxy{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  opacity:.35;
+  mix-blend-mode: screen;
+}
+
 </style>
 </head>
 
@@ -1281,6 +1425,29 @@ header::after{
   <div class="fxVignette" aria-hidden="true"></div>
   <div class="fxNoise" aria-hidden="true"></div>
   <div class="fxHUD" aria-hidden="true"></div>
+  <div class="fxStatus" aria-hidden="true">
+    <div class="fxStatusRow">
+      <span class="fxLed"></span><span class="fxLabel">SYSTEM</span>
+      <span class="fxValue" id="fxSys">ONLINE</span>
+    </div>
+    <div class="fxStatusRow">
+      <span class="fxLed cyan"></span><span class="fxLabel">LINK</span>
+      <span class="fxValue" id="fxLink">STABLE</span>
+    </div>
+    <div class="fxStatusRow">
+      <span class="fxLed vio"></span><span class="fxLabel">SYNC</span>
+      <span class="fxValue" id="fxSync">99.98%</span>
+    </div>
+  </div>
+
+  <div class="fxWarp" id="fxWarp" aria-hidden="true">
+    <div class="fxWarpRing"></div>
+    <div class="fxWarpRing r2"></div>
+    <div class="fxWarpRing r3"></div>
+    <div class="fxWarpFlash"></div>
+    <div class="fxWarpText">HYPER‑JUMP</div>
+  </div>
+
 
   <div class="universe" aria-hidden="true"></div>
   <div class="scan" aria-hidden="true"></div>
@@ -1386,6 +1553,7 @@ header::after{
       </div>
 
       <div class="roadCard">
+        <canvas id="roadGalaxy" aria-hidden="true"></canvas>
         <div class="roadInner">
           <div class="phase">
             <div>
@@ -1849,6 +2017,132 @@ All future features and business integrations depend on project success, market 
   }
   window.addEventListener('resize', ()=>{ initStars(); initParts(); }, {passive:true});
   boot();
+})();
+
+
+/* =========================================================
+   NEXT LEVEL JS: HUD STATUS + SWAP WARP + ROADMAP GALAXY
+   (visual only; does not change existing logic)
+   ========================================================= */
+(function(){
+  // HUD status subtle live readout
+  const elSys = document.getElementById('fxSys');
+  const elLink = document.getElementById('fxLink');
+  const elSync = document.getElementById('fxSync');
+
+  function jitterSync(){
+    if(elSync){
+      const base = 99.90;
+      const v = base + Math.random()*0.09;
+      elSync.textContent = v.toFixed(2) + '%';
+    }
+    if(elLink){
+      elLink.textContent = (Math.random() < 0.97) ? 'STABLE' : 'CALIBRATING';
+    }
+    if(elSys){
+      elSys.textContent = 'ONLINE';
+    }
+  }
+  setInterval(jitterSync, 900);
+
+  // Warp overlay effect on SWAP click (visual only)
+  const warp = document.getElementById('fxWarp');
+  const btnSwap = document.getElementById('btnSwap');
+  if(btnSwap && warp){
+    btnSwap.addEventListener('click', ()=>{
+      warp.classList.add('show');
+      setTimeout(()=>warp.classList.remove('show'), 620);
+    }, {passive:true});
+  }
+
+  // Roadmap Galaxy canvas (visual only, runs only when roadmap open)
+  const c = document.getElementById('roadGalaxy');
+  const overlay = document.getElementById('roadOverlay');
+  if(!c || !overlay) return;
+
+  const ctx = c.getContext('2d', {alpha:true});
+  let stars = [];
+  let raf = 0;
+
+  function resize(){
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio||1));
+    const r = c.getBoundingClientRect();
+    c.width = Math.floor(r.width * dpr);
+    c.height = Math.floor(r.height * dpr);
+
+    const n = Math.max(140, Math.floor((c.width*c.height)/90000));
+    stars = Array.from({length:n}, ()=>({
+      x:Math.random()*c.width,
+      y:Math.random()*c.height,
+      r:(0.7+Math.random()*1.8),
+      a:(0.10+Math.random()*0.35),
+      s:(0.15+Math.random()*0.55),
+      k:Math.random()*Math.PI*2
+    }));
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+
+    const g = ctx.createRadialGradient(c.width*0.5, c.height*0.2, 0, c.width*0.5, c.height*0.2, c.width*0.9);
+    g.addColorStop(0, 'rgba(36,209,255,0.10)');
+    g.addColorStop(0.55, 'rgba(124,77,255,0.06)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,c.width,c.height);
+
+    for(const s of stars){
+      s.k += 0.02*s.s;
+      s.y += s.s;
+      s.x += Math.sin(s.k)*0.08;
+      if(s.y > c.height+10){ s.y = -10; s.x = Math.random()*c.width; }
+      ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fill();
+    }
+
+    for(let i=0;i<stars.length;i++){
+      const a = stars[i];
+      for(let j=i+1;j<stars.length;j++){
+        const b = stars[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const d=Math.hypot(dx,dy);
+        if(d<160){
+          ctx.strokeStyle = `rgba(36,209,255,${0.02 + (1-d/160)*0.08})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y);
+          ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  function start(){
+    if(raf) return;
+    resize();
+    draw();
+  }
+  function stop(){
+    if(!raf) return;
+    cancelAnimationFrame(raf);
+    raf = 0;
+    ctx.clearRect(0,0,c.width,c.height);
+  }
+
+  // Observe overlay show/hide
+  const obs = new MutationObserver(()=>{
+    const open = overlay.classList.contains('show');
+    if(open) start();
+    else stop();
+  });
+  obs.observe(overlay, {attributes:true, attributeFilter:['class']});
+
+  window.addEventListener('resize', ()=>{ if(raf) resize(); }, {passive:true});
 })();
 
 </script>
