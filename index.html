@@ -978,6 +978,71 @@ body::before{
   50%{opacity:1}
 }
 
+
+/* ===== INTERSTELLAR FLEET MODE ===== */
+
+/* Galaxy map overlay */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,.7), transparent),
+    radial-gradient(2px 2px at 75% 55%, rgba(255,255,255,.6), transparent),
+    radial-gradient(2px 2px at 45% 85%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 60% 20%, rgba(124,77,255,.6), transparent),
+    radial-gradient(1px 1px at 30% 60%, rgba(36,209,255,.6), transparent);
+  animation: galaxyDrift 55s linear infinite;
+  pointer-events:none;
+  z-index:0;
+}
+@keyframes galaxyDrift{
+  from{transform:translateY(0)}
+  to{transform:translateY(-260px)}
+}
+
+/* Hyper-jump flash on swap hover */
+#btnSwap:hover{
+  box-shadow:
+    0 0 90px rgba(255,204,77,.9),
+    0 0 160px rgba(124,77,255,.7);
+}
+
+/* Fleet HUD pulse */
+header{
+  position:relative;
+}
+header::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:16px;
+  border:1px solid rgba(36,209,255,.45);
+  box-shadow: 0 0 26px rgba(36,209,255,.35);
+  opacity:.65;
+  animation: hudPulse 4s ease-in-out infinite;
+}
+@keyframes hudPulse{
+  0%,100%{opacity:.4}
+  50%{opacity:.85}
+}
+
+/* Command alerts */
+.infoPortal.show{
+  box-shadow:
+    0 0 80px rgba(124,77,255,.6),
+    0 0 140px rgba(36,209,255,.35);
+}
+
+/* Docking micro-motion */
+.logoStage{
+  animation: dockFloat 7s ease-in-out infinite;
+}
+@keyframes dockFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
+}
+
 </style>
 </head>
 
