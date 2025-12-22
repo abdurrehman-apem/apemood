@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>APE MOOD (APEM) — Buy & Hold</title>
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>APE MOOD (APEM) — Buy &amp; Hold</title>
+<style>
     :root{
       --bg:#05060a;
       --txt: rgba(255,250,235,.92);
@@ -1584,200 +1584,172 @@ body.portal-open .frontExtra{
 
 </style>
 </head>
-
 <body>
-
-  <!-- =========================
+<!-- =========================
        ULTRA VISUAL LAYERS (SPACE ART)
        - pure visual only
        - does not change text/buttons/functions
        ========================= -->
-  <canvas id="fxStars" aria-hidden="true"></canvas>
-  <canvas id="fxParticles" aria-hidden="true"></canvas>
-  <div class="fxVignette" aria-hidden="true"></div>
-  <div class="fxNoise" aria-hidden="true"></div>
-  <div class="fxHUD" aria-hidden="true"></div>
-  <div class="fxStatus" aria-hidden="true">
-    <div class="fxStatusRow">
-      <span class="fxLed"></span><span class="fxLabel">SYSTEM</span>
-      <span class="fxValue" id="fxSys">ONLINE</span>
-    </div>
-    <div class="fxStatusRow">
-      <span class="fxLed cyan"></span><span class="fxLabel">LINK</span>
-      <span class="fxValue" id="fxLink">STABLE</span>
-    </div>
-    <div class="fxStatusRow">
-      <span class="fxLed vio"></span><span class="fxLabel">SYNC</span>
-      <span class="fxValue" id="fxSync">99.98%</span>
-    </div>
-  </div>
-
-  <div class="fxWarp" id="fxWarp" aria-hidden="true">
-    <div class="fxWarpRing"></div>
-    <div class="fxWarpRing r2"></div>
-    <div class="fxWarpRing r3"></div>
-    <div class="fxWarpFlash"></div>
-    <div class="fxWarpText">HYPER‑JUMP</div>
-  </div>
-
-
-  <div class="universe" aria-hidden="true"></div>
-  <div class="scan" aria-hidden="true"></div>
-
-  <div class="wrap" id="top">
-
-    <header>
-      <div class="brand">
-        <span class="brandDot"></span>
-        <span class="brandText">APE MOOD (APEM)</span>
-      </div>
-
-      <div class="topRight">
+<canvas aria-hidden="true" id="fxStars"></canvas>
+<canvas aria-hidden="true" id="fxParticles"></canvas>
+<div aria-hidden="true" class="fxVignette"></div>
+<div aria-hidden="true" class="fxNoise"></div>
+<div aria-hidden="true" class="fxHUD"></div>
+<div aria-hidden="true" class="fxStatus">
+<div class="fxStatusRow">
+<span class="fxLed"></span><span class="fxLabel">SYSTEM</span>
+<span class="fxValue" id="fxSys">ONLINE</span>
+</div>
+<div class="fxStatusRow">
+<span class="fxLed cyan"></span><span class="fxLabel">LINK</span>
+<span class="fxValue" id="fxLink">STABLE</span>
+</div>
+<div class="fxStatusRow">
+<span class="fxLed vio"></span><span class="fxLabel">SYNC</span>
+<span class="fxValue" id="fxSync">99.98%</span>
+</div>
+</div>
+<div aria-hidden="true" class="fxWarp" id="fxWarp">
+<div class="fxWarpRing"></div>
+<div class="fxWarpRing r2"></div>
+<div class="fxWarpRing r3"></div>
+<div class="fxWarpFlash"></div>
+<div class="fxWarpText">HYPER‑JUMP</div>
+</div>
+<div aria-hidden="true" class="universe"></div>
+<div aria-hidden="true" class="scan"></div>
+<div class="wrap" id="top">
+<header>
+<div class="brand">
+<span class="brandDot"></span>
+<span class="brandText">APE MOOD (APEM)</span>
+</div>
+<div class="topRight">
         BNB Smart Chain • BEP-20<br/>
         Community Driven • Ethical
       </div>
-    </header>
-
-    <section class="hero" id="hero">
-      <div class="buyHold"><span style="position:relative;z-index:2">BUY AND HOLD</span></div>
-
-      <div class="logoStage">
-        <div class="orbitA"><div class="orbDot"></div></div>
-        <div class="orbitB"></div>
-        <div class="orbitC"></div>
-
-        <div class="logoCore">
-          <img src="apem-logo.png" alt="APEM Logo"/>
-        </div>
+</header>
+<section class="hero" id="hero">
+<div class="buyHold"><span style="position:relative;z-index:2">BUY AND HOLD</span></div>
+<div class="logoStage">
+<div class="orbitA"><div class="orbDot"></div></div>
+<div class="orbitB"></div>
+<div class="orbitC"></div>
+<div class="logoCore">
+<img alt="APEM Logo" src="apem-logo.png"/>
+</div>
+</div>
+<div class="h1">
+<span class="grad">Foundation</span> of a Future Ecosystem
       </div>
-
-      <div class="h1">
-        <span class="grad">Foundation</span> of a Future Ecosystem
-      </div>
-
-      <!-- typing intro line -->
-      <div class="sub">
-        <span class="typeLine" id="heroTyping"></span><span class="caret">▍</span>
-      </div>
-
-      <div class="metaRow">
-        <div class="cardMini">
-          <div style="font-weight:1000">Contract</div>
-          <div class="mono" id="contractText">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</div>
-          <button class="copyBtn" id="copyBtn">Copy</button>
-        </div>
-
-        <div class="social cardMini" style="gap:8px">
-          <a href="#" id="xLink" aria-label="X link">X</a>
-          <a href="#" id="tgLink" aria-label="Telegram link">Telegram</a>
-        </div>
-      </div>
-
-      <!-- PRIMARY CTA -->
-      <div class="btnRow btnPrimaryRow">
-        <button class="btn primary" id="btnSwap">Swap</button>
-      </div>
-
-      <!-- SECONDARY ACTIONS -->
-      <div class="btnRow btnSecondaryRow">
-        <button class="btn" id="btnTokenomics">Tokenomics</button>
-        <button class="btn" id="btnEthics">Ethics</button>
-        <button class="btn" id="btnSecurity">Security</button>
-        <button class="btn" id="btnDisclaimer">Disclaimer</button>
-        <button class="btn" id="btnWhitepaper">Whitepaper</button>
-        <button class="btn primary" id="btnRoadmap">Roadmap</button>
-      </div>
-
-      <div class="frontExtra">
-        <h3 class="grad">Short Overview</h3>
-        <p>
+<!-- typing intro line -->
+<div class="sub">
+<span class="typeLine" id="heroTyping"></span><span class="caret">▍</span>
+</div>
+<div class="metaRow">
+<div class="cardMini">
+<div style="font-weight:1000">Contract</div>
+<div class="mono" id="contractText">0x1a44C4e6f19EdF8449CCD951Ba2ec2B3e3001C35</div>
+<button class="copyBtn" id="copyBtn">Copy</button>
+</div>
+<div class="social cardMini" style="gap:8px">
+<a aria-label="X link" href="#" id="xLink">X</a>
+<a aria-label="Telegram link" href="#" id="tgLink">Telegram</a>
+</div>
+</div>
+<!-- PRIMARY CTA -->
+<div class="btnRow btnPrimaryRow">
+<button class="btn primary" id="btnSwap">Swap</button>
+</div>
+<!-- SECONDARY ACTIONS -->
+<div class="btnRow btnSecondaryRow">
+<button class="btn" id="btnTokenomics">Tokenomics</button>
+<button class="btn" id="btnEthics">Ethics</button>
+<button class="btn" id="btnSecurity">Security</button>
+<button class="btn" id="btnDisclaimer">Disclaimer</button>
+<button class="btn" id="btnWhitepaper">Whitepaper</button>
+<button class="btn primary" id="btnRoadmap">Roadmap</button>
+</div>
+<div class="frontExtra">
+<h3 class="grad">Short Overview</h3>
+<p>
           Ape Mood (APEM) is a community-driven, next-generation digital asset on <b>BNB Smart Chain</b>.
           It is designed as the foundation of a future ecosystem spanning <b>blockchain technology</b>,
           <b>artificial intelligence</b>, digital platforms, and ethical real-world business initiatives.
         </p>
-      </div>
-
-      <!-- Info portal (auto open/close) -->
-      <div class="infoPortal" id="infoPortal">
-        <div class="portalInner">
-          <div class="portalTitle">
-            <h3 class="grad" id="portalTitle">Title</h3>
-            <button class="portalClose" id="portalClose">✕</button>
-          </div>
-          <div class="portalText" id="portalText"></div>
-        </div>
-      </div>
-
-      <div style="height:22px"></div>
-    </section>
-  </div>
-
-  <!-- ROADMAP PORTAL -->
-  <div class="roadOverlay" id="roadOverlay" aria-hidden="true">
-    <div class="roadBG" aria-hidden="true"></div>
-    <div class="roadScan" aria-hidden="true"></div>
-
-    <div class="roadWrap">
-      <div class="topBar">
-        <button class="backBtn" id="btnBack">✕</button>
-        <div class="roadTitle">
-          <span class="grad" style="font-size:20px">ROADMAP</span>
-          <span class="small"></span>
-        </div>
-      </div>
-
-      <div class="roadCard">
-        <canvas id="roadGalaxy" aria-hidden="true"></canvas>
-        <div class="roadInner">
-          <div class="phase">
-            <div>
-              <div class="tag"><span class="dot cyan"></span> PHASE 1</div>
-              <h4>Token Launch & Community Building</h4>
-            </div>
-            <ul>
-              <li>Token launch on BNB Smart Chain (BEP-20)</li>
-              <li>Buy & Hold community focus</li>
-              <li>Community building & awareness</li>
-              <li>Foundation for future ecosystem growth</li>
-            </ul>
-          </div>
-
-          <div class="phase">
-            <div>
-              <div class="tag"><span class="dot"></span> PHASE 2</div>
-              <h4>Digital Platforms & AI Exploration</h4>
-            </div>
-            <ul>
-              <li>Digital platform planning & development</li>
-              <li>AI-related exploration & ecosystem planning</li>
-              <li>Long-term sustainability model (step-by-step)</li>
-            </ul>
-          </div>
-
-          <div class="phase">
-            <div>
-              <div class="tag"><span class="dot amb"></span> PHASE 3</div>
-              <h4>Real-World Integration & Expansion</h4>
-            </div>
-            <ul>
-              <li>Connect ethical real-world businesses with blockchain</li>
-              <li>Long-term expansion & community value</li>
-              <li>Transparency, shared responsibility, and real activity</li>
-            </ul>
-          </div>
-
-          <div class="roadNote">
-            <b>Note:</b> APE MOOD (APEM) does not offer guaranteed profits, fixed returns, or financial advice.
+</div>
+<!-- Info portal (auto open/close) -->
+<div class="infoPortal" id="infoPortal">
+<div class="portalInner">
+<div class="portalTitle">
+<h3 class="grad" id="portalTitle">Title</h3>
+<button class="portalClose" id="portalClose">✕</button>
+</div>
+<div class="portalText" id="portalText"></div>
+</div>
+</div>
+<div style="height:22px"></div>
+</section>
+</div>
+<!-- ROADMAP PORTAL -->
+<div aria-hidden="true" class="roadOverlay" id="roadOverlay">
+<div aria-hidden="true" class="roadBG"></div>
+<div aria-hidden="true" class="roadScan"></div>
+<div class="roadWrap">
+<div class="topBar">
+<button class="backBtn" id="btnBack">✕</button>
+<div class="roadTitle">
+<span class="grad" style="font-size:20px">ROADMAP</span>
+<span class="small"></span>
+</div>
+</div>
+<div class="roadCard">
+<canvas aria-hidden="true" id="roadGalaxy"></canvas>
+<div class="roadInner">
+<div class="phase">
+<div>
+<div class="tag"><span class="dot cyan"></span> PHASE 1</div>
+<h4>Token Launch &amp; Community Building</h4>
+</div>
+<ul>
+<li>Token launch on BNB Smart Chain (BEP-20)</li>
+<li>Buy &amp; Hold community focus</li>
+<li>Community building &amp; awareness</li>
+<li>Foundation for future ecosystem growth</li>
+</ul>
+</div>
+<div class="phase">
+<div>
+<div class="tag"><span class="dot"></span> PHASE 2</div>
+<h4>Digital Platforms &amp; AI Exploration</h4>
+</div>
+<ul>
+<li>Digital platform planning &amp; development</li>
+<li>AI-related exploration &amp; ecosystem planning</li>
+<li>Long-term sustainability model (step-by-step)</li>
+</ul>
+</div>
+<div class="phase">
+<div>
+<div class="tag"><span class="dot amb"></span> PHASE 3</div>
+<h4>Real-World Integration &amp; Expansion</h4>
+</div>
+<ul>
+<li>Connect ethical real-world businesses with blockchain</li>
+<li>Long-term expansion &amp; community value</li>
+<li>Transparency, shared responsibility, and real activity</li>
+</ul>
+</div>
+<div class="roadNote">
+<b>Note:</b> APE MOOD (APEM) does not offer guaranteed profits, fixed returns, or financial advice.
             Future features depend on project success, market conditions, and development progress.
           </div>
-        </div>
-      </div>
-
-      <div style="height:26px"></div>
-    </div>
-  </div>
-
-  <script>
+</div>
+</div>
+<div style="height:26px"></div>
+</div>
+</div>
+<script>
     /* =========================
        PDF CONTENT (from your whitepaper)
        ========================= */
@@ -2384,5 +2356,5 @@ const infoPortal = document.getElementById('infoPortal');
 })();
 
 </script>
-</body>
+<footer style="margin-top:40px;text-align:center;"><div class="footer-social" style="display:flex;justify-content:center;gap:16px;margin-top:20px;"><a href="https://x.com/apemood" rel="noopener noreferrer" target="_blank">X</a><a href="https://t.me/apemoodofficial" rel="noopener noreferrer" target="_blank">Telegram</a></div></footer></body>
 </html>
