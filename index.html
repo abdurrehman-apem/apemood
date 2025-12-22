@@ -1289,7 +1289,7 @@ header::after{
 
 
 /* =========================================================
-   NEXT LEVEL: HYPER-JUMP + HUD STATUS + PORTAL SCANNER
+   NEXT LEVEL:  + HUD STATUS + PORTAL SCANNER
    (visual only; IDs/text/functions unchanged)
    ========================================================= */
 
@@ -1558,6 +1558,24 @@ body.portal-open{
   overflow: hidden !important;
 }
 
+
+/* === FINAL PORTAL CLEANUP === */
+
+/* Ensure portal fully overlays front content */
+.infoPortal{
+  background: rgba(0,0,0,0.72) !important;
+}
+
+/* Remove warp label text */
+.fxWarpText{
+  display:none !important;
+}
+
+/* Remove roadmap subtitle text */
+.roadTitle .small{
+  display:none !important;
+}
+
 </style>
 </head>
 
@@ -1698,7 +1716,7 @@ body.portal-open{
         <button class="backBtn" id="btnBack">✕</button>
         <div class="roadTitle">
           <span class="grad" style="font-size:20px">ROADMAP</span>
-          <span class="small">High-class Sci-Fi Portal (scrollable)</span>
+          <span class="small"></span>
         </div>
       </div>
 
