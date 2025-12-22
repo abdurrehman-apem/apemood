@@ -1571,6 +1571,21 @@ body.portal-open{
   transform: translate(-50%, -50%) scale(1) !important;
 }
 
+
+/* === FINAL GLITCH-FREE PORTAL OPEN (MOBILE SAFE) === */
+.infoPortal{
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important; /* ALWAYS centered */
+  opacity: 0;
+  transition: opacity .25s ease; /* NO transform animation */
+  will-change: opacity;
+}
+.infoPortal.show{
+  opacity: 1;
+}
+
 </style>
 </head>
 
