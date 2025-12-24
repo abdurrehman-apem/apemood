@@ -1651,6 +1651,16 @@ footer.hidden {
   opacity: 1 !important;
   transform: none !important;
 }
+
+
+/* Sticky bottom social bar (always visible) */
+.bottom-socials a{
+  transition:transform .2s ease, color .2s ease;
+}
+.bottom-socials a:hover{
+  transform:translateY(-2px) scale(1.08);
+  color:var(--txt);
+}
 </style>
 </head>
 <body>
@@ -2439,5 +2449,13 @@ const infoPortal = document.getElementById('infoPortal');
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
 <path d="M9.993 15.674L9.813 20.073C10.067 20.073 10.183 19.955 10.322 19.812L12.517 17.725L17.066 21.04C17.912 21.507 18.505 21.26 18.722 20.279L22.39 3.948C22.66 2.675 21.927 2.065 21.103 2.36L1.61 9.874C0.39 10.353 0.404 11.038 1.402 11.345L6.387 12.9L18.93 5.377C19.51 5.02 20.037 5.214 19.598 5.571L9.993 15.674Z"></path>
 </svg>
-</a></div></footer></body>
+</a></div></footer><footer class="bottom-socials" style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:18px;align-items:center;justify-content:center;padding:10px 14px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);box-shadow:0 0 18px rgba(255,204,77,.25);z-index:99999;"><a aria-label="X Social" href="https://x.com/apemood" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
+<svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
+<path d="M18.244 2H21.552L14.34 10.26L22.848 22H16.172L10.956 14.72L4.656 22H1.344L9.072 13.14L0.848 2H7.688L12.428 8.56L18.244 2Z"></path>
+</svg>
+</a><a aria-label="Telegram Social" href="https://t.me/apemoodofficial" rel="noopener noreferrer" style="color:var(--gold);display:flex;align-items:center;" target="_blank">
+<svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
+<path d="M9.993 15.674L9.813 20.073C10.067 20.073 10.183 19.955 10.322 19.812L12.517 17.725L17.066 21.04C17.912 21.507 18.505 21.26 18.722 20.279L22.39 3.948C22.66 2.675 21.927 2.065 21.103 2.36L1.61 9.874C0.39 10.353 0.404 11.038 1.402 11.345L6.387 12.9L18.93 5.377C19.51 5.02 20.037 5.214 19.598 5.571L9.993 15.674Z"></path>
+</svg>
+</a></footer></body>
 </html>
