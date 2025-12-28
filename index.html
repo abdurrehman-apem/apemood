@@ -1857,11 +1857,18 @@ Telegram</a>
         <img id="founderPhoto" src="assets/founder.png" alt="Founder Photo"
              style="width:120px;height:120px;border-radius:14px;border:1px solid rgba(255,220,120,.35);object-fit:cover;background:rgba(0,0,0,.25);">
         <div style="font-size:16px;font-weight:900;color:#fff;">Founder — Abdur Rehman</div>
+        
         <a href="https://www.linkedin.com/in/abdur-rehman-2459b83a1/" target="_blank" rel="noopener noreferrer"
-   style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,220,120,.25);padding:6px 10px;border-radius:10px;text-decoration:none;color:#fff;font-weight:900;background:rgba(0,0,0,.35);font-size:12px;">
-   <img src="https://static.cdnlogo.com/logos/l/66/linkedin-icon.svg" style="width:14px;height:14px;"> LinkedIn
-</a>
-        <div style="margin-top:6px;font-size:12px;color:#fff;font-weight:900;">Email: Contact@apemood.com</div>
+           style="display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,220,120,.25);padding:6px 10px;border-radius:10px;text-decoration:none;color:#fff;font-weight:900;background:rgba(0,0,0,.35);font-size:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="#0A66C2">
+            <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.22 8.5h4.56V24H.22V8.5zM8.34 8.5h4.37v2.11h.06c.61-1.16 2.11-2.38 4.34-2.38 4.64 0 5.5 3.05 5.5 7.02V24h-4.56v-7.36c0-1.76-.03-4.02-2.45-4.02-2.45 0-2.83 1.91-2.83 3.89V24H8.34V8.5z"/>
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+        <div style="margin-top:6px;font-size:12px;color:#fff;font-weight:900;">
+          Email: Contact@apemood.com
+        </div>
+
       </div>
       
     </div>
@@ -2539,23 +2546,6 @@ const teamClose=document.getElementById("teamClose");
 if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
 if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
 
-
-// === TEAM PORTAL CLOSE BACKGROUND FIX ===
-const teamPortal=document.getElementById("teamPortal");
-const btnTeam=document.getElementById("btnTeam");
-const teamClose=document.getElementById("teamClose");
-if(btnTeam){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
-if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
-// tag
-
-
-// === SWAP PORTAL CLOSE BUTTON FIX ===
-const swapPortal=document.getElementById("swapPortal");
-const btnSwap=document.getElementById("btnSwap");
-const swapClose=document.getElementById("swapClose");
-if(btnSwap){btnSwap.addEventListener("click",()=>{swapPortal.classList.add("show");document.body.classList.add("portal-open");});}
-if(swapClose){swapClose.addEventListener("click",()=>{swapPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
-
 </script>
 <footer style="margin-top:60px;text-align:center;"><div class="footer-social" style="display:flex;justify-content:center;gap:18px;margin-top:18px;"><a href="https://x.com/apemood" rel="noopener noreferrer" target="_blank">
 <svg fill="currentColor" height="22" viewbox="0 0 24 24" width="22">
@@ -2619,24 +2609,32 @@ const teamClose=document.getElementById("teamClose");
 if(btnTeam&&teamPortal){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
 if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
 
-
-// === TEAM PORTAL CLOSE BACKGROUND FIX ===
-const teamPortal=document.getElementById("teamPortal");
-const btnTeam=document.getElementById("btnTeam");
-const teamClose=document.getElementById("teamClose");
-if(btnTeam){btnTeam.addEventListener("click",()=>{document.body.classList.add("portal-open");teamPortal.classList.add("show");});}
-if(teamClose){teamClose.addEventListener("click",()=>{teamPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
-// tag
-
-
-// === SWAP PORTAL CLOSE BUTTON FIX ===
-const swapPortal=document.getElementById("swapPortal");
-const btnSwap=document.getElementById("btnSwap");
-const swapClose=document.getElementById("swapClose");
-if(btnSwap){btnSwap.addEventListener("click",()=>{swapPortal.classList.add("show");document.body.classList.add("portal-open");});}
-if(swapClose){swapClose.addEventListener("click",()=>{swapPortal.classList.remove("show");document.body.classList.remove("portal-open");});}
-
 </script>
 
+
+<script>
+// TEAM PORTAL RE-BIND (safe, no background bug)
+(function(){
+  const oldBtn = document.getElementById("btnTeam");
+  const teamPortal = document.getElementById("teamPortal");
+  const closeBtn = document.getElementById("teamClose");
+  if(!oldBtn || !teamPortal) return;
+
+  // remove old listeners
+  const btnTeam = oldBtn.cloneNode(true);
+  oldBtn.parentNode.replaceChild(btnTeam, oldBtn);
+
+  btnTeam.addEventListener("click", function(e){
+    e.preventDefault();
+    teamPortal.classList.add("show");
+  });
+
+  if(closeBtn){
+    closeBtn.addEventListener("click", function(){
+      teamPortal.classList.remove("show");
+    });
+  }
+})();
+</script>
 </body>
 </html>
