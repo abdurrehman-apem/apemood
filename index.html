@@ -1703,6 +1703,57 @@ footer.hidden {
   .swapFrame{ min-height:0; height:100%; }
 }
 
+
+/* ======================================================
+   MOBILE PINCH‑ZOOM STABILITY PATCH
+   Fixes blank screen when user pinches to zoom on mobile
+   Keeps layout visible on Mobile + Laptop
+   ====================================================== */
+
+@media (max-width: 1024px){
+
+  html, body{
+    min-height:100%;
+    height:auto;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+
+  /* Convert heavy fixed visual layers to absolute on mobile
+     (prevents page disappearing during zoom) */
+  .universe,
+  .scan,
+  .fxHUD,
+  .fxNoise,
+  .fxVignette,
+  body::before,
+  body::after,
+  .wrap::before,
+  .wrap::after{
+    position:absolute !important;
+  }
+
+  /* Stop GPU transforms from collapsing layout on zoom */
+  *{
+    transform:none !important;
+    will-change:auto !important;
+  }
+
+  /* Portals remain fixed & safe */
+  .infoPortal,
+  .roadOverlay,
+  .swapPortal{
+    position:fixed !important;
+    transform:none !important;
+  }
+}
+
+/* Prevent accidental body lock after zoom */
+body{
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
 </style>
 
   <!-- Favicon & App Icons -->
