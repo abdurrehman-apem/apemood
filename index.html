@@ -1704,51 +1704,52 @@ footer.hidden {
 }
 
 
-/* ======================================================
-   MOBILE PINCH‑ZOOM STABILITY PATCH
-   Fixes blank screen when user pinches to zoom on mobile
-   Keeps layout visible on Mobile + Laptop
-   ====================================================== */
+/* =============================================
+   MOBILE PINCH-ZOOM STABILITY (SAFE VERSION)
+   - Keeps all buttons & text visible
+   - Only affects decorative FX layers
+   - Laptop / Desktop remain unchanged
+   ============================================= */
+@media (max-width: 768px){
 
-@media (max-width: 1024px){
-
+  /* Let the page grow naturally on zoom */
   html, body{
-    min-height:100%;
     height:auto;
+    min-height:100%;
     overflow-x:hidden;
-    overflow-y:auto;
   }
 
-  /* Convert heavy fixed visual layers to absolute on mobile
-     (prevents page disappearing during zoom) */
+  /* Turn off heavy visual FX on small screens
+     so zoom never hides main content */
+  #fxStars,
+  #fxParticles,
+  .fxVignette,
+  .fxNoise,
+  .fxHUD,
   .universe,
   .scan,
-  .fxHUD,
-  .fxNoise,
-  .fxVignette,
   body::before,
   body::after,
   .wrap::before,
   .wrap::after{
-    position:absolute !important;
+    display:none !important;
   }
 
-  /* Stop GPU transforms from collapsing layout on zoom */
-  *{
-    transform:none !important;
-    will-change:auto !important;
-  }
-
-  /* Portals remain fixed & safe */
+  /* Keep main content & portals fully visible */
+  .wrap,
+  header,
+  .hero,
+  .frontExtra,
   .infoPortal,
+  #teamPortal,
   .roadOverlay,
   .swapPortal{
-    position:fixed !important;
-    transform:none !important;
+    position:relative;
+    z-index:5;
   }
 }
 
-/* Prevent accidental body lock after zoom */
+/* Smooth scrolling & safe overscroll */
 body{
   overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;
